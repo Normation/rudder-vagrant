@@ -53,11 +53,7 @@ also resolves as "server.rudder.local". This can be done by copy-pasting this sm
 script chunk in you favorite shell. You only need to do this once.
 
 -------------------
-# If "server.rudder.local" is not present in your hosts file, then add it to the localhost.
-if ! grep -q "server.rudder.local" /etc/hosts
-then
-	sudo sed -i "s/^\(127\.0\.0\.1.*\)/\1 server.rudder.local/" /etc/hosts
-fi
+if ! grep -q "server.rudder.local" /etc/hosts; then sudo sed -i "s/^\(127\.0\.0\.1.*\)/\1 server.rudder.local/" /etc/hosts; fi
 -------------------
 
 Clone this repository:
@@ -91,7 +87,8 @@ server to make things go a bit faster.
 vagrant up server
 ----
 
-* Cleanly shutdown the VMs
+* Cleanly shutdown the VMs (issuing a "vagrant up" after that does not deploy the
+VMs again but instead starts them normally)
 
 ----
 vagrant halt
@@ -115,5 +112,5 @@ likely to make Rudder output odd reports if you do not have an active NTP daemon
 * Open an SSH shell connection to a machine
 
 ----
-vagrant ssh server # SSH shell to the server
+vagrant ssh server
 ----
