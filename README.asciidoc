@@ -68,19 +68,34 @@ git clone https://github.com/Normation/rudder-vagrant.git && cd rudder-vagrant
 
 Then you can use the Vagrant environment at will:
 
+* To launch the complete environment: server and node
+
 ----
 vagrant up # To launch the complete environment: server and node
-vagrant up server # (or node) Launch selectively one machine
-vagrant destroy # To trash the environment
-vagrant ssh server # SSH shell to the server
-vagrant ssh node # SSH shell to the node
 ----
 
-Your rudder environment is available at: http://server.rudder.local:8080/
+* Launch selectively one machine:
+
+----
+vagrant up server
+----
+
+* Trash the enviroment (obliterate the VMs)
+
+----
+vagrant destroy # To trash the environment
+----
+
+* Open an SSH shell connection to a machine
+
+----
+vagrant ssh server # SSH shell to the server
+----
+
+NOTE: Your rudder environment is available at: http://server.rudder.local:8080/
 
 NOTE: The node and the server are automatically set to communicate with each
 other, but you will have to wait approximately 10mn before the node appears in
 Rudder's web interface in the node acceptation pane.
-
 If you are in a hurry, run a /opt/rudder/sbin/cf-agent on the node, and on the
 server to make things go a bit faster.
