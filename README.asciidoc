@@ -1,0 +1,86 @@
+Rudder: configuration management for the masses
+----------------------------------------------
+
+This project is part of Rudder - configuration management for the masses.
+ 
+See: http://rudder-project.org for more information. 
+
+[horizontal]
+Screenshots:: http://www.rudder-project.org/foswiki/Screenshots/WebHome
+User documentation:: http://www.rudder-project.org/rudder-doc/rudder-doc.html
+Bug report:: http://www.rudder-project.org/redmine/projects/rudder/issues
+Mailing list, irc:: http://www.rudder-project.org/foswiki/Community/
+
+=== Authors
+
+Normation http://normation.com
+
+- Matthieu "Kegeruneku" Cerda matthieu.cerda@normation.com
+
+=== License
+
+This project is licensed under GPLv3 license, 
+see the provided "LICENSE" file or 
+http://www.gnu.org/licenses/gpl-3.0.txt
+
+=== Contributing
+
+Thank you for your interest in our project!
+The contribution process is detailed here: 
+http://www.rudder-project.org/HowToContribute
+
+=== Synopsis
+
+This git repository contains a Vagrant (http://www.vagrantup.com) configuration, enabling
+the user to launch from scratch a complete Rudder environment in a few minutes.
+
+=== Requirements
+
+There are two dependencies: VirtualBox and Vagrant.
+
+The former may be installed using your favorite package management system, and the latter
+using RubyGems.
+
+See the complete installation instructions here:
+
+* VirtualBox: https://www.virtualbox.org/wiki/Downloads
+* Vagrant: http://vagrantup.com/docs/getting-started/index.html
+
+=== Usage
+
+When you have the required dependencies, you will have to ensure that your local machine
+also resolves as "server.rudder.local". This can be done by copy-pasting this small shell
+script chunk in you favorite shell. You only need to do this once.
+
+----
+# If "server.rudder.local" is not present in your hosts file, then add it to the localhost.
+if ! grep -q "server.rudder.local" /etc/hosts
+then
+	sudo sed -i "s/^\(127\.0\.0\.1.*\)/\1 server.rudder.local/" /etc/hosts
+fi
+----
+
+Clone this repository:
+
+----
+git clone https://github.com/Normation/rudder-vagrant.git && cd rudder-vagrant
+----
+
+Then you can use the Vagrant environment at will:
+
+----
+vagrant up # To launch the complete environment: server and node
+vagrant up server # (or node) Launch selectively one machine
+vagrant destroy # To trash the environment
+vagrant ssh server # SSH shell to the server
+vagrant ssh node # SSH shell to the node
+----
+
+Your rudder environment is available at: http://server.rudder.local:8080/
+
+NOTE: The node and the server are automatically set to communicate with each
+other, but you will have to wait approximately 10mn before the node appears in
+Rudder's web interface in the node acceptation pane.
+
+If you are in a hurry, run a /opt/rudder/sbin/cf-agent on the node, and on the
+server to make things go a bit faster.
