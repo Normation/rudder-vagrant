@@ -34,7 +34,7 @@ APTITUDE_ARGS="--assume-yes"
 
 aptitude update && aptitude ${APTITUDE_ARGS} install lsb-release
 
-apt-key adv --recv-keys --keyserver ${KEYSERVER} ${KEY}
+wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo apt-key add -
 
 #APT configuration
 echo "deb http://ftp.fr.debian.org/debian/ $(lsb_release -cs) main non-free" > /etc/apt/sources.list
