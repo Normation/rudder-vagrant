@@ -41,6 +41,7 @@ Vagrant::Config.run do |config|
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
 
   config.vm.define :server do |server_config|
+    server_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
     server_config.vm.forward_port  80, 8080
     server_config.vm.network :hostonly, "192.168.42.10"
     server_config.vm.provision :shell, :path => "provision/server.sh"
