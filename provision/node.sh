@@ -32,37 +32,42 @@ APTITUDE_ARGS="--assume-yes"
 # destroy the very fabric of our reality and maybe hurt kittens.
 # Be responsible, please think of the kittens.
 
-aptitude update && aptitude ${APTITUDE_ARGS} install lsb-release
+# Host preparation:
+# This machine is "node", with the FQDN "node.rudder.local".
+# It has this IP : 192.168.42.11 (See the Vagrantfile)
 
+sed -i "s%^127\.0\.1\.1.*%127\.0\.1\.1\tnode\.rudder\.local\tnode%" /etc/hosts
+echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
+echo "node" > /etc/hostname
+hostname node
+
+# Install lsb-release so we can guess which Debian version are we operating on.
+aptitude update && aptitude ${APTITUDE_ARGS} install lsb-release
+DEBIAN_RELEASE=$(lsb_release -cs)
+
+# Accept the Rudder repository key
 wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo apt-key add -
 
 #APT configuration
-echo "deb http://ftp.fr.debian.org/debian/ $(lsb_release -cs) main non-free" > /etc/apt/sources.list
-echo "deb-src http://ftp.fr.debian.org/debian/ $(lsb_release -cs) main non-free" >> /etc/apt/sources.list
-echo "deb http://security.debian.org/ $(lsb_release -cs)/updates main" >> /etc/apt/sources.list
-echo "deb-src http://security.debian.org/ $(lsb_release -cs)/updates main" >> /etc/apt/sources.list
-echo "deb http://ftp.fr.debian.org/debian/ $(lsb_release -cs)-updates main" >> /etc/apt/sources.list
-echo "deb-src http://ftp.fr.debian.org/debian/ $(lsb_release -cs)-updates main" >> /etc/apt/sources.list
+echo "deb http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE} main non-free" > /etc/apt/sources.list
+echo "deb-src http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE} main non-free" >> /etc/apt/sources.list
+echo "deb http://security.debian.org/ ${DEBIAN_RELEASE}/updates main" >> /etc/apt/sources.list
+echo "deb-src http://security.debian.org/ ${DEBIAN_RELEASE}/updates main" >> /etc/apt/sources.list
+echo "deb http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >> /etc/apt/sources.list
+echo "deb-src http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >> /etc/apt/sources.list
 
-echo "deb ${RUDDER_REPO_URL} $(lsb_release -cs) main contrib non-free" > /etc/apt/sources.list.d/rudder.list
+echo "deb ${RUDDER_REPO_URL} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
 
+# Update APT cache
 aptitude update
 
-#Packages minimum
-aptitude ${APTITUDE_ARGS} install debian-archive-keyring
-
+#Packages required by Rudder
 aptitude ${APTITUDE_ARGS} install rudder-agent
 
-sed -i "s%^127\.0\.1\.1.*%127\.0\.1\.1\tnode\.rudder\.local\tnode%" /etc/hosts
-
-echo "node" > /etc/hostname
-
-hostname node
-
-echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
-
+# Set the IP of the rudder master
 echo "192.168.42.10" > /var/rudder/cfengine-community/policy_server.dat
 
-echo '0,5,10,15,20,25,30,35,40,45,50,55 * * * * root if [ `ps -efww | grep cf-execd | grep "/var/rudder/cfengine-community/bin/cf-execd" | grep -v grep | wc -l` -eq 0 ]; then /var/rudder/cfengine-community/bin/cf-execd; fi' >> /etc/crontab
+# Start the CFEngine agent
+/etc/init.d/rudder-agent start
 
 echo "Rudder node install: FINISHED" |tee /tmp/rudder.log
