@@ -32,7 +32,7 @@ INITPRORESET="yes"
 ALLOWEDNETWORK[0]='192.168.42.0/24'
 
 # Misc
-APTITUDE_ARGS="--assume-yes"
+APTITUDE_ARGS="--assume-yes --allow-untrusted"
 
 # Showtime
 # Editing anything below might create a time paradox which would
@@ -44,7 +44,17 @@ APTITUDE_ARGS="--assume-yes"
 # It has this IP : 192.168.42.10 (See the Vagrantfile)
 
 sed -i "s%^127\.0\.1\.1.*%127\.0\.1\.1\tserver\.rudder\.local\tserver%" /etc/hosts
-echo -e "\n192.168.42.11	node.rudder.local" >> /etc/hosts
+echo -e "\n192.168.42.11	node1.rudder.local" >> /etc/hosts
+echo -e "\n192.168.42.12	node2.rudder.local" >> /etc/hosts
+echo -e "\n192.168.42.13	node3.rudder.local" >> /etc/hosts
+echo -e "\n192.168.42.14	node4.rudder.local" >> /etc/hosts
+echo -e "\n192.168.42.15	node5.rudder.local" >> /etc/hosts
+echo -e "\n192.168.42.16	node6.rudder.local" >> /etc/hosts
+echo -e "\n192.168.42.17	node7.rudder.local" >> /etc/hosts
+echo -e "\n192.168.42.18	node8.rudder.local" >> /etc/hosts
+echo -e "\n192.168.42.19	node9.rudder.local" >> /etc/hosts
+echo -e "\n192.168.42.20	node10.rudder.local" >> /etc/hosts
+
 echo "server" > /etc/hostname
 hostname server
 

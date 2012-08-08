@@ -26,11 +26,11 @@ Vagrant::Config.run do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "debian-squeeze-32"
+  config.vm.box = "debian-squeeze-64"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "http://mathie-vagrant-boxes.s3.amazonaws.com/debian_squeeze_32.box"
+  config.vm.box_url = "http://dl.dropbox.com/u/937870/VMs/squeeze64.box"
 
   # Boot with a GUI so you can see the screen. (Default is headless)
   # config.vm.boot_mode = :gui
@@ -47,8 +47,9 @@ Vagrant::Config.run do |config|
     server_config.vm.provision :shell, :path => "provision/server.sh"
   end
 
-  config.vm.define :node do |node_config|
+  config.vm.define :node1 do |node_config|
     node_config.vm.network :hostonly, "192.168.42.11"
+    node_config.vm.host_name = "node1"
     node_config.vm.provision :shell, :path => "provision/node.sh"
   end
 

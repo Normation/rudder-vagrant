@@ -25,7 +25,7 @@ KEY=474A19E8
 RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.4/"
 
 # Misc
-APTITUDE_ARGS="--assume-yes"
+APTITUDE_ARGS="--assume-yes --allow-untrusted"
 
 # Showtime
 # Editing anything below might create a time paradox which would
@@ -36,10 +36,9 @@ APTITUDE_ARGS="--assume-yes"
 # This machine is "node", with the FQDN "node.rudder.local".
 # It has this IP : 192.168.42.11 (See the Vagrantfile)
 
-sed -i "s%^127\.0\.1\.1.*%127\.0\.1\.1\tnode\.rudder\.local\tnode%" /etc/hosts
+sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
-echo "node" > /etc/hostname
-hostname node
+
 
 # Install lsb-release so we can guess which Debian version are we operating on.
 aptitude update && aptitude ${APTITUDE_ARGS} install lsb-release
