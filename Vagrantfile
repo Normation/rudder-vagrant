@@ -42,7 +42,7 @@ Vagrant::Config.run do |config|
 
   config.vm.define :server do |server_config|
     server_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
-    server_config.vm.forward_port  80, 8080
+    server_config.vm.forward_port  80, 8082
     server_config.vm.network :hostonly, "192.168.42.10"
     server_config.vm.provision :shell, :path => "provision/server.sh"
   end
@@ -53,4 +53,19 @@ Vagrant::Config.run do |config|
     node_config.vm.provision :shell, :path => "provision/node.sh"
   end
 
+  config.vm.define :node2 do |node_config|
+    node_config.vm.network :hostonly, "192.168.42.12"
+    node_config.vm.host_name = "node2"
+    node_config.vm.provision :shell, :path => "provision/node.sh"
+  end
+  config.vm.define :node3 do |node_config|
+    node_config.vm.network :hostonly, "192.168.42.13"
+    node_config.vm.host_name = "node3"
+    node_config.vm.provision :shell, :path => "provision/node.sh"
+  end
+  config.vm.define :node4 do |node_config|
+    node_config.vm.network :hostonly, "192.168.42.14"
+    node_config.vm.host_name = "node4"
+    node_config.vm.provision :shell, :path => "provision/node.sh"
+  end
 end

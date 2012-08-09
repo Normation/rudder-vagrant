@@ -22,7 +22,7 @@
 # Fetch parameters
 KEYSERVER=keyserver.ubuntu.com
 KEY=474A19E8
-RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.4/"
+RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.3/"
 
 # Misc
 APTITUDE_ARGS="--assume-yes --allow-untrusted"

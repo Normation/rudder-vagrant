@@ -22,17 +22,17 @@
 # Fetch parameters
 KEYSERVER=keyserver.ubuntu.com
 KEY=474A19E8
-RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.4/"
+RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.3/"
 
 # Rudder related parameters
-SERVER_INSTANCE_HOST="server.rudder.local"
+SERVER_INSTANCE_HOST="192.168.42.10"
 DEMOSAMPLE="no"
 LDAPRESET="yes"
 INITPRORESET="yes"
 ALLOWEDNETWORK[0]='192.168.42.0/24'
 
 # Misc
-APTITUDE_ARGS="--assume-yes --allow-untrusted"
+APTITUDE_ARGS="--assume-yes"
 
 # Showtime
 # Editing anything below might create a time paradox which would
@@ -85,10 +85,14 @@ aptitude update
 aptitude ${APTITUDE_ARGS} install rudder-server-root
 
 # Initialize Rudder
-/opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
+/opt/rudder/bin/rudder-init.sh "server.rudder.local" $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]}
 
 # Edit the base url parameter of Rudder to this Vagrant machine fully qualified name
 sed -i s%^base\.url\=.*%base\.url\=http\:\/\/server\.rudder\.local\:8080\/rudder% /opt/rudder/etc/rudder-web.properties
+
+#copy a fake licence file to make rudder happy
+mkdir -p /opt/rudder/etc/licenses/
+cp /vagrant/licences.xml /opt/rudder/etc/licenses/
 
 # Start the rudder web service
 /etc/init.d/jetty restart
