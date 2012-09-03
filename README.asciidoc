@@ -44,7 +44,7 @@ using RubyGems.
 See the complete installation instructions here:
 
 * VirtualBox: https://www.virtualbox.org/wiki/Downloads
-* Vagrant: http://vagrantup.com/docs/getting-started/index.html
+* Vagrant: http://vagrantup.com/v1/docs/getting-started/index.html
 
 === Usage
 
