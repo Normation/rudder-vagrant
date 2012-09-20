@@ -32,7 +32,7 @@ INITPRORESET="yes"
 ALLOWEDNETWORK[0]='192.168.42.0/24'
 
 # Misc
-APTITUDE_ARGS="--assume-yes --allow-untrusted"
+APTITUDE_ARGS="--assume-yes"
 
 # Showtime
 # Editing anything below might create a time paradox which would
