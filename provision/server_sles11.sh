@@ -78,6 +78,17 @@ gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
 enabled=1
 EOF
 
+# Before Rudder 2.5 SDK is needed
+cat > /etc/zypp/repos.d/SUSE-SP1-SDK.repo <<EOF
+[SUSE_SLE-11_SP1_SDK]
+name=Official SUSE Linux Enterprise 11 SP1 SDK
+type=yast2
+baseurl=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/
+gpgcheck=1
+gpgkey=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/pubring.gpg
+enabled=1
+EOF
+
 # Refresh zypper
 zypper ${ZYPPER_ARGS} refresh
 
