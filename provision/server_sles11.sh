@@ -20,10 +20,10 @@
 ## Config stage
 
 # Rudder version
-RUDDER_VERSION="2.5"
+RUDDER_VERSION="2.4"
 
 # Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/SLES_11_SP1/"
+RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.4/SLES_11_SP1/"
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
 # Rudder related parameters

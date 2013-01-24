@@ -22,7 +22,7 @@
 # Fetch parameters
 KEYSERVER=keyserver.ubuntu.com
 KEY=474A19E8
-RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.5/"
+RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.4/"
 
 # Rudder related parameters
 SERVER_INSTANCE_HOST="server.rudder.local"
@@ -32,7 +32,7 @@ INITPRORESET="yes"
 ALLOWEDNETWORK[0]='192.168.42.0/24'
 
 # Misc
-APTITUDE_ARGS="--assume-yes --allow-untrusted"
+APTITUDE_ARGS="--assume-yes"
 
 # Showtime
 # Editing anything below might create a time paradox which would
