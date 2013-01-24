@@ -35,6 +35,7 @@ ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 # This machine is "node", with the FQDN "node.rudder.local".
 # It has this IP : 192.168.42.11 (See the Vagrantfile)
 
+echo "node" > /etc/HOSTNAME
 sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
@@ -56,6 +57,17 @@ type=yast2
 baseurl=http://support.ednet.ns.ca/sles/11x86_64/
 gpgcheck=1
 gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
+enabled=1
+EOF
+
+# Before Rudder 2.5 SDK is needed
+cat > /etc/zypp/repos.d/SUSE-SP1-SDK.repo <<EOF
+[SUSE_SLE-11_SP1_SDK]
+name=Official SUSE Linux Enterprise 11 SP1 SDK
+type=yast2
+baseurl=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/
+gpgcheck=1
+gpgkey=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/pubring.gpg
 enabled=1
 EOF
 

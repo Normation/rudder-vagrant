@@ -81,7 +81,6 @@ Vagrant::Config.run do |config|
     config.vm.box = "sles-11-64"
     config.vm.box_url = "http://puppetlabs.s3.amazonaws.com/pub/sles11sp1_64.box"
     node_config.vm.network :hostonly, "192.168.42.11"
-    node_config.vm.host_name = "node1"
     node_config.vm.provision :shell, :path => "provision/node_sles11.sh"
   end
 

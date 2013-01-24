@@ -22,7 +22,7 @@
 # Fetch parameters
 KEYSERVER=keyserver.ubuntu.com
 KEY=474A19E8
-RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.4/"
+RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.3/"
 
 # Rudder related parameters
 SERVER_INSTANCE_HOST="server.rudder.local"
@@ -89,6 +89,9 @@ aptitude ${APTITUDE_ARGS} install rudder-server-root
 
 # Edit the base url parameter of Rudder to this Vagrant machine fully qualified name don't need for 2.5
 # sed -i s%^base\.url\=.*%base\.url\=http\:\/\/server\.rudder\.local\:8080\/rudder% /opt/rudder/etc/rudder-web.properties
+
+# Add licenses
+cp licenses.xml /opt/rudder/etc/licenses/
 
 # Start the rudder web service
 /etc/init.d/jetty restart
