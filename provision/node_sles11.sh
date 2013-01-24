@@ -35,7 +35,7 @@ ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 # This machine is "node", with the FQDN "node.rudder.local".
 # It has this IP : 192.168.42.11 (See the Vagrantfile)
 
-echo "node" > /etc/HOSTNAME
+echo "node1" > /etc/HOSTNAME
 sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
