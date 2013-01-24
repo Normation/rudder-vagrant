@@ -20,10 +20,10 @@
 ## Config stage
 
 # Rudder version
-RUDDER_VERSION="2.4"
+RUDDER_VERSION="2.5"
 
 # Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.4/SLES_11_SP1"
+RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/SLES_11_SP1"
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
 # Showtime
@@ -57,17 +57,6 @@ type=yast2
 baseurl=http://support.ednet.ns.ca/sles/11x86_64/
 gpgcheck=1
 gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
-enabled=1
-EOF
-
-# Before Rudder 2.5 SDK is needed
-cat > /etc/zypp/repos.d/SUSE-SP1-SDK.repo <<EOF
-[SUSE_SLE-11_SP1_SDK]
-name=Official SUSE Linux Enterprise 11 SP1 SDK
-type=yast2
-baseurl=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/
-gpgcheck=1
-gpgkey=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/pubring.gpg
 enabled=1
 EOF
 
