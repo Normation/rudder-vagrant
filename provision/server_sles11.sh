@@ -23,7 +23,7 @@
 RUDDER_VERSION="2.5"
 
 # Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/SLES_11_SP1"
+RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/SLES_11_SP1/"
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
 # Rudder related parameters
@@ -56,6 +56,7 @@ echo -e "\n192.168.42.20	node10.rudder.local" >> /etc/hosts
 echo "server" > /etc/HOSTNAME
 hostname server
 
+# Add Rudder repository
 cat > /etc/zypp/repos.d/Rudder.repo <<EOF
 [Rudder${RUDDER_VERSION}Nightly]
 name=Rudder ${RUDDER_VERSION} Nightly RPM
@@ -66,17 +67,28 @@ type=rpm-md
 keeppackages=0
 EOF
 
-# Update APT cache
+# Add Sles 11 repository
+cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
+[SUSE_SLES-11_SP1]
+name=Official released updates for SUSE Linux Enterprise 11 SP1
+type=yast2
+baseurl=http://support.ednet.ns.ca/sles/11x86_64/
+gpgcheck=1
+gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
+enabled=1
+EOF
+
+# Refresh zypper
 zypper ${ZYPPER_ARGS} refresh
 
-#Packages required by Rudder
+# Install Rudder
 zypper ${ZYPPER_ARGS} install rudder-server-root
 
 # Initialize Rudder
 /opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
 
-# Edit the base url parameter of Rudder to this Vagrant machine fully qualified name
-sed -i s%^base\.url\=.*%base\.url\=http\:\/\/server\.rudder\.local\:8080\/rudder% /opt/rudder/etc/rudder-web.properties
+# Edit the base url parameter of Rudder to this Vagrant machine fully qualified name no need for 2.5
+# sed -i s%^base\.url\=.*%base\.url\=http\:\/\/server\.rudder\.local\:8080\/rudder% /opt/rudder/etc/rudder-web.properties
 
 #add licence
 cp licences.xml /opt/rudder/etc/licenses/

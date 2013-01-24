@@ -35,10 +35,8 @@ ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 # This machine is "node", with the FQDN "node.rudder.local".
 # It has this IP : 192.168.42.11 (See the Vagrantfile)
 
-sed -i "s%^127\.0\.0\.1.*%127\.0\.0\.1\tnode\.rudder\.local\tnode%" /etc/hosts
+sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
-echo "node" > /etc/HOSTNAME
-hostname node
 
 cat > /etc/zypp/repos.d/Rudder.repo <<EOF
 [Rudder${RUDDER_VERSION}Nightly]
@@ -50,10 +48,21 @@ type=rpm-md
 keeppackages=0
 EOF
 
-# Update APT cache
+# Add Sles 11 repository
+cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
+[SUSE_SLES-11_SP1]
+name=Official released updates for SUSE Linux Enterprise 11 SP1
+type=yast2
+baseurl=http://support.ednet.ns.ca/sles/11x86_64/
+gpgcheck=1
+gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
+enabled=1
+EOF
+
+# Refresh Zypper
 zypper ${ZYPPER_ARGS} refresh
 
-#Packages required by Rudder
+# Install Rudder agent
 zypper ${ZYPPER_ARGS} install rudder-agent
 
 # Set the IP of the rudder master

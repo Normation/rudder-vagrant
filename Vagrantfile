@@ -40,6 +40,8 @@ Vagrant::Config.run do |config|
   # folder, and the third is the path on the host to the actual folder.
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
 
+
+  # Debian boxes
   config.vm.define :server do |server_config|
     server_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
     server_config.vm.forward_port  80, 8080
@@ -65,11 +67,10 @@ Vagrant::Config.run do |config|
     node_config.vm.provision :shell, :path => "provision/node.sh"
   end
 
-  config.vm.box = "sles-11-64"
-  config.vm.box_url = "http://puppetlabs.s3.amazonaws.com/pub/sles11sp1_64.box"
-
-
+  # SLES 11 SP1 boxes
   config.vm.define :server_sles11 do |server_config|
+    config.vm.box = "sles-11-64"
+    config.vm.box_url = "http://puppetlabs.s3.amazonaws.com/pub/sles11sp1_64.box"
     server_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
     server_config.vm.forward_port  80, 8080
     server_config.vm.network :hostonly, "192.168.42.10"
@@ -77,8 +78,12 @@ Vagrant::Config.run do |config|
   end
 
   config.vm.define :node1_sles11 do |node_config|
+    config.vm.box = "sles-11-64"
+    config.vm.box_url = "http://puppetlabs.s3.amazonaws.com/pub/sles11sp1_64.box"
     node_config.vm.network :hostonly, "192.168.42.11"
     node_config.vm.host_name = "node1"
     node_config.vm.provision :shell, :path => "provision/node_sles11.sh"
   end
+
+
 end
