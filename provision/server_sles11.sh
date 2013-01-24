@@ -90,8 +90,8 @@ zypper ${ZYPPER_ARGS} install rudder-server-root
 # Edit the base url parameter of Rudder to this Vagrant machine fully qualified name no need for 2.5
 # sed -i s%^base\.url\=.*%base\.url\=http\:\/\/server\.rudder\.local\:8080\/rudder% /opt/rudder/etc/rudder-web.properties
 
-#add licence
-cp licences.xml /opt/rudder/etc/licenses/
+# Add licenses (don't think it's needed anymore)
+# cp licenses.xml /opt/rudder/etc/licenses/
 
 # Start the rudder web service
 /etc/init.d/jetty restart < /dev/null > /dev/null 2>&1
