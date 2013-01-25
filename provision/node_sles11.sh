@@ -19,11 +19,17 @@
 
 ## Config stage
 
+
 # Rudder version
 RUDDER_VERSION="2.3"
+RUDDER_VERSION24="2.4"
+RUDDER_VERSION25="2.5"
 
 # Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.3/SLES_11_SP1"
+RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.3/SLES_11_SP1/"
+RUDDER_REPO_URL24="http://www.rudder-project.org/rpm-2.4/SLES_11_SP1/"
+RUDDER_REPO_URL25="http://www.rudder-project.org/rpm-2.5/SLES_11_SP1/"
+
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
 # Showtime
@@ -45,6 +51,28 @@ name=Rudder ${RUDDER_VERSION} Nightly RPM
 enabled=1
 autorefresh=0
 baseurl=${RUDDER_REPO_URL}
+type=rpm-md
+keeppackages=0
+EOF
+
+# Add Rudder2.4 repository
+cat > /etc/zypp/repos.d/Rudder2.4.repo <<EOF
+[Rudder${RUDDER_VERSION24}Nightly]
+name=Rudder ${RUDDER_VERSION24} Nightly RPM
+enabled=0
+autorefresh=0
+baseurl=${RUDDER_REPO_URL24}
+type=rpm-md
+keeppackages=0
+EOF
+
+# Add Rudder repository
+cat > /etc/zypp/repos.d/Rudder2.5.repo <<EOF
+[Rudder${RUDDER_VERSION25}Nightly]
+name=Rudder ${RUDDER_VERSION25} Nightly RPM
+enabled=0
+autorefresh=0
+baseurl=${RUDDER_REPO_URL25}
 type=rpm-md
 keeppackages=0
 EOF
