@@ -19,13 +19,14 @@
 
 ## Config stage
 
-# Fetch parameters
-KEYSERVER=keyserver.ubuntu.com
-KEY=474A19E8
-RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.5/"
 
-# Misc
-APTITUDE_ARGS="--assume-yes"
+# Rudder version
+RUDDER_VERSION="2.5"
+
+# Fetch parameters
+RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/SLES_11_SP1"
+
+ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
 # Showtime
 # Editing anything below might create a time paradox which would
@@ -36,32 +37,36 @@ APTITUDE_ARGS="--assume-yes"
 # This machine is "node", with the FQDN "node.rudder.local".
 # It has this IP : 192.168.42.11 (See the Vagrantfile)
 
+echo "node1" > /etc/HOSTNAME
 sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
+cat > /etc/zypp/repos.d/Rudder.repo <<EOF
+[Rudder${RUDDER_VERSION}Nightly]
+name=Rudder ${RUDDER_VERSION} Nightly RPM
+enabled=1
+autorefresh=0
+baseurl=${RUDDER_REPO_URL}
+type=rpm-md
+keeppackages=0
+EOF
 
-# Install lsb-release so we can guess which Debian version are we operating on.
-aptitude update && aptitude ${APTITUDE_ARGS} install lsb-release
-DEBIAN_RELEASE=$(lsb_release -cs)
+# Add Sles 11 repository
+cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
+[SUSE_SLES-11_SP1]
+name=Official released updates for SUSE Linux Enterprise 11 SP1
+type=yast2
+baseurl=http://support.ednet.ns.ca/sles/11x86_64/
+gpgcheck=1
+gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
+enabled=1
+EOF
 
-# Accept the Rudder repository key
-wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo apt-key add -
+# Refresh Zypper
+zypper ${ZYPPER_ARGS} refresh
 
-#APT configuration
-echo "deb http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE} main non-free" > /etc/apt/sources.list
-echo "deb-src http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE} main non-free" >> /etc/apt/sources.list
-echo "deb http://security.debian.org/ ${DEBIAN_RELEASE}/updates main" >> /etc/apt/sources.list
-echo "deb-src http://security.debian.org/ ${DEBIAN_RELEASE}/updates main" >> /etc/apt/sources.list
-echo "deb http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >> /etc/apt/sources.list
-echo "deb-src http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >> /etc/apt/sources.list
-
-echo "deb ${RUDDER_REPO_URL} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
-
-# Update APT cache
-aptitude update
-
-#Packages required by Rudder
-aptitude ${APTITUDE_ARGS} install rudder-agent
+# Install Rudder agent
+zypper ${ZYPPER_ARGS} install rudder-agent
 
 # Set the IP of the rudder master
 echo "192.168.42.10" > /var/rudder/cfengine-community/policy_server.dat
