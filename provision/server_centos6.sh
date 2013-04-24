@@ -22,10 +22,14 @@
 # Rudder version
 RUDDER_VERSION="2.4"
 RUDDER_VERSION25="2.5"
+RUDDER_VERSION26="2.6"
+RUDDER_VERSION26_NIGHTLY="2.6-nightly"
 
 # Fetch parameters
 RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.4/RHEL_6/"
 RUDDER_REPO_URL25="http://www.rudder-project.org/rpm-2.5/RHEL_6/"
+RUDDER_REPO_URL26="http://www.rudder-project.org/rpm-2.6/RHEL_6/"
+RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/rpm-2.6-nightly/RHEL_6/"
 
 YUM_ARGS="-y --nogpgcheck"
 
@@ -73,7 +77,25 @@ name=Rudder ${RUDDER_VERSION25} Repository
 baseurl=${RUDDER_REPO_URL25}
 enabled=0
 gpgcheck=0
-" > /etc/yum.repos.d/rudder2.5.repo
+" > /etc/yum.repos.d/rudder2.6.repo
+
+
+# Add Rudder 2.6 repository
+echo "[Rudder_${RUDDER_VERSION26}]
+name=Rudder ${RUDDER_VERSION26} Repository
+baseurl=${RUDDER_REPO_URL26}
+enabled=0
+gpgcheck=0
+" > /etc/yum.repos.d/rudder2.6.repo
+
+# Add Rudder 2.6-nightly repository
+echo "[Rudder_${RUDDER_VERSION26_NIGHTLY}]
+name=Rudder ${RUDDER_VERSION26_NIGHTLY} Repository
+baseurl=${RUDDER_REPO_URL26_NIGHTLY}
+enabled=0
+gpgcheck=0
+" > /etc/yum.repos.d/rudder2.6.nightly.repo
+
 
 # Set SElinux as permissive
 setenforce 0
