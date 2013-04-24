@@ -25,9 +25,9 @@ RUDDER_VERSION26="2.6"
 RUDDER_VERSION26_NIGHTLY="2.6-nightly"
 
 # Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/RHEL_6/"
-RUDDER_REPO_URL26="http://www.rudder-project.org/rpm-2.6/RHEL_6/"
-RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/rpm-2.6-nightly/RHEL_6/"
+RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/SLES_11/"
+RUDDER_REPO_URL26="http://www.rudder-project.org/rpm-2.6/SLES_11/"
+RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/rpm-2.6-nightly/SLES_11/"
 
 
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
@@ -96,7 +96,7 @@ keeppackages=0
 EOF
 
 
-# Add Sles 11 repository
+# Add Sles 11 repositories
 cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
 [SUSE_SLES-11_SP1]
 name=Official released updates for SUSE Linux Enterprise 11 SP1
@@ -105,6 +105,15 @@ baseurl=http://support.ednet.ns.ca/sles/11x86_64/
 gpgcheck=1
 gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
 enabled=1
+EOF
+cat > /etc/zypp/repos.d/SUSE_SLE-11_SP1_SDK.repo <<EOF
+[SUSE_SLE-11_SP1_SDK]
+name=Official SUSE Linux Enterprise 11 SP1 SDK
+enabled=1
+autorefresh=0
+baseurl=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/
+type=yast2
+keeppackages=0
 EOF
 
 # Refresh zypper
