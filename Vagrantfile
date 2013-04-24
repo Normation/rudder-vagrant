@@ -68,37 +68,37 @@ Vagrant::Config.run do |config|
   end
 
   # SLES 11 SP1 boxes
-  config.vm.define :server_sles11 do |server_config|
-    config.vm.box = "sles-11-64"
-    config.vm.box_url = "http://puppetlabs.s3.amazonaws.com/pub/sles11sp1_64.box"
-    server_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
-    server_config.vm.forward_port  80, 8080
-    server_config.vm.network :hostonly, "192.168.42.10"
-    server_config.vm.provision :shell, :path => "provision/server_sles11.sh"
+  config.vm.define :server_sles11 do |sles11_server_config|
+    sles11_server_config.vm.box = "sles-11-64"
+    sles11_server_config.vm.box_url = "http://puppetlabs.s3.amazonaws.com/pub/sles11sp1_64.box"
+    sles11_server_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
+    sles11_server_config.vm.forward_port  80, 8080
+    sles11_server_config.vm.network :hostonly, "192.168.42.10"
+    sles11_server_config.vm.provision :shell, :path => "provision/server_sles11.sh"
   end
 
-  config.vm.define :node1_sles11 do |node_config|
-    config.vm.box = "sles-11-64"
-    config.vm.box_url = "http://puppetlabs.s3.amazonaws.com/pub/sles11sp1_64.box"
-    node_config.vm.network :hostonly, "192.168.42.11"
-    node_config.vm.provision :shell, :path => "provision/node_sles11.sh"
+  config.vm.define :node1_sles11 do |sles11_node_config|
+    sles11_node_config.vm.box = "sles-11-64"
+    sles11_node_config.vm.box_url = "http://puppetlabs.s3.amazonaws.com/pub/sles11sp1_64.box"
+    sles11_node_config.vm.network :hostonly, "192.168.42.11"
+    sles11_node_config.vm.provision :shell, :path => "provision/node_sles11.sh"
   end
 
   # Centos 6 boxes
-  config.vm.define :centos6 do |centos6_config|
-    centos6_config.vm.box = "centos6"
-    centos6_config.vm.box_url = "https://s3.amazonaws.com/itmat-public/centos-6.3-chef-10.14.2.box"
-    centos6_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
-    centos6_config.vm.forward_port  80, 8080
-    centos6_config.vm.network :hostonly, "192.168.42.10"
-    centos6_config.vm.provision :shell, :path => "provision/server_centos6.sh"
+  config.vm.define :centos6 do |centos6_server_config|
+    centos6_server_config.vm.box = "centos6"
+    centos6_server_config.vm.box_url = "https://s3.amazonaws.com/itmat-public/centos-6.3-chef-10.14.2.box"
+    centos6_server_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
+    centos6_server_config.vm.forward_port  80, 8080
+    centos6_server_config.vm.network :hostonly, "192.168.42.10"
+    centos6_server_config.vm.provision :shell, :path => "provision/server_centos6.sh"
   end
 
-  config.vm.define :node1_centos6 do |node_config|
-    config.vm.box = "centos6"
-    config.vm.box_url = "http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.3-x86_64-v20130101.box"
-    node_config.vm.network :hostonly, "192.168.42.11"
-    node_config.vm.provision :shell, :path => "provision/node_centos6.sh"
+  config.vm.define :node1_centos6 do |centos6_node_config|
+    centos6_node_config.vm.box = "centos6"
+    centos6_node_config.vm.box_url = "http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.3-x86_64-v20130101.box"
+    centos6_node_config.vm.network :hostonly, "192.168.42.11"
+    centos6_node_config.vm.provision :shell, :path => "provision/node_centos6.sh"
   end
 
 

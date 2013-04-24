@@ -108,7 +108,7 @@ keeppackages=0
 EOF
 
 
-# Add Sles 11 repository
+# Add Sles 11 repositories
 cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
 [SUSE_SLES-11_SP1]
 name=Official released updates for SUSE Linux Enterprise 11 SP1
@@ -125,9 +125,9 @@ cat > /etc/zypp/repos.d/SUSE-SP1-SDK.repo <<EOF
 name=Official SUSE Linux Enterprise 11 SP1 SDK
 type=yast2
 baseurl=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/
-gpgcheck=1
-gpgkey=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/pubring.gpg
 enabled=1
+autorefresh=0
+keeppackages=0
 EOF
 
 # Refresh zypper
