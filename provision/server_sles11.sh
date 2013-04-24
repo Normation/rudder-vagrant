@@ -21,9 +21,14 @@
 
 # Rudder version
 RUDDER_VERSION="2.5"
+RUDDER_VERSION26="2.6"
+RUDDER_VERSION26_NIGHTLY=="2.6-nightly"
 
 # Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/SLES_11_SP1/"
+RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/RHEL_6/"
+RUDDER_REPO_URL26="http://www.rudder-project.org/rpm-2.6/RHEL_6/"
+RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/rpm-2.6-nightly/RHEL_6/"
+
 
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
@@ -59,14 +64,37 @@ hostname server
 
 # Add Rudder repository
 cat > /etc/zypp/repos.d/Rudder.repo <<EOF
-[Rudder${RUDDER_VERSION}Nightly]
-name=Rudder ${RUDDER_VERSION} Nightly RPM
+[Rudder${RUDDER_VERSION}]
+name=Rudder ${RUDDER_VERSION} RPM
 enabled=1
 autorefresh=0
 baseurl=${RUDDER_REPO_URL}
 type=rpm-md
 keeppackages=0
 EOF
+
+# Add Rudder 2.6 repository
+cat > /etc/zypp/repos.d/Rudder2.6.repo << EOF
+[Rudder_${RUDDER_VERSION26}]
+name=Rudder ${RUDDER_VERSION26} Repository
+baseurl=${RUDDER_REPO_URL26}
+enabled=0
+autorefresh=0
+type=rpm-md
+keeppackages=0
+EOF
+
+# Add Rudder 2.6-nightly repository
+cat > /etc/zypp/repos.d/Rudder2.6-nightly.repo << EOF
+[Rudder_${RUDDER_VERSION26_NIGHTLY}]
+name=Rudder ${RUDDER_VERSION26_NIGHTLY} Repository
+baseurl=${RUDDER_REPO_URL26_NIGHTLY}
+enabled=0
+autorefresh=0
+type=rpm-md
+keeppackages=0
+EOF
+
 
 # Add Sles 11 repository
 cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
