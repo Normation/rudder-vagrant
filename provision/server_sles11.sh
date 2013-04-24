@@ -22,7 +22,7 @@
 # Rudder version
 RUDDER_VERSION="2.5"
 RUDDER_VERSION26="2.6"
-RUDDER_VERSION26_NIGHTLY=="2.6-nightly"
+RUDDER_VERSION26_NIGHTLY="2.6-nightly"
 
 # Fetch parameters
 RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/RHEL_6/"
