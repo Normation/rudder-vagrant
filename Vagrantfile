@@ -84,5 +84,22 @@ Vagrant::Config.run do |config|
     node_config.vm.provision :shell, :path => "provision/node_sles11.sh"
   end
 
+  # Centos 6 boxes
+  config.vm.define :centos6 do |centos6_config|
+    centos6_config.vm.box = "centos6"
+    centos6_config.vm.box_url = "https://s3.amazonaws.com/itmat-public/centos-6.3-chef-10.14.2.box"
+    centos6_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
+    centos6_config.vm.forward_port  80, 8080
+    centos6_config.vm.network :hostonly, "192.168.42.10"
+    centos6_config.vm.provision :shell, :path => "provision/server_centos6.sh"
+  end
+
+  config.vm.define :node1_centos6 do |node_config|
+    config.vm.box = "centos6"
+    config.vm.box_url = "http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.3-x86_64-v20130101.box"
+    node_config.vm.network :hostonly, "192.168.42.11"
+    node_config.vm.provision :shell, :path => "provision/node_centos6.sh"
+  end
+
 
 end
