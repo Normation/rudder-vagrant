@@ -116,6 +116,9 @@ type=yast2
 keeppackages=0
 EOF
 
+# Remove DVD repository
+zypper rr "SUSE-Linux-Enterprise-Server-11-SP1 11.1.1-1.152"
+
 # Refresh zypper
 zypper ${ZYPPER_ARGS} refresh
 
