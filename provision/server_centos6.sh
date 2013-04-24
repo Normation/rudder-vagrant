@@ -20,12 +20,10 @@
 ## Config stage
 
 # Rudder version
-RUDDER_VERSION="2.6"
-RUDDER_VERSION26_NIGHTLY="2.6-nightly"
+RUDDER_VERSION="2.6-nightly"
 
 # Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.6/RHEL_6/"
-RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/rpm-2.6-nightly/RHEL_6/"
+RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.6-nightly/RHEL_6/"
 
 YUM_ARGS="-y --nogpgcheck"
 
@@ -66,14 +64,6 @@ baseurl=${RUDDER_REPO_URL}
 enabled=1
 gpgcheck=0
 " > /etc/yum.repos.d/rudder.repo
-
-# Add Rudder 2.6-nightly repository
-echo "[Rudder_${RUDDER_VERSION26_NIGHTLY}]
-name=Rudder ${RUDDER_VERSION26_NIGHTLY} Repository
-baseurl=${RUDDER_REPO_URL26_NIGHTLY}
-enabled=0
-gpgcheck=0
-" > /etc/yum.repos.d/rudder2.6.nightly.repo
 
 
 # Set SElinux as permissive

@@ -22,8 +22,7 @@
 # Fetch parameters
 KEYSERVER=keyserver.ubuntu.com
 KEY=474A19E8
-RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.6/"
-RUDDER_REPO_URL2.6_NIGHTLY="http://www.rudder-project.org/apt-2.6-nightly/"
+RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.6-nightly/"
 
 # Rudder related parameters
 SERVER_INSTANCE_HOST="server.rudder.local"
@@ -78,7 +77,6 @@ echo "deb http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >> /e
 echo "deb-src http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >> /etc/apt/sources.list
 
 echo "deb ${RUDDER_REPO_URL} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
-echo "#deb ${RUDDER_REPO_URL2.6_NIGHTLY} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
 
 # Update APT cache
 aptitude update

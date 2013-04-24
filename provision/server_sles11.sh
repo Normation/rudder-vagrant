@@ -20,12 +20,10 @@
 ## Config stage
 
 # Rudder version
-RUDDER_VERSION="2.6"
-RUDDER_VERSION26_NIGHTLY="2.6-nightly"
+RUDDER_VERSION="2.6-nightly"
 
 # Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.6/RHEL_6/"
-RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/rpm-2.6-nightly/RHEL_6/"
+RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.6-nightly/RHEL_6/"
 
 
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
@@ -67,17 +65,6 @@ name=Rudder ${RUDDER_VERSION} RPM
 enabled=1
 autorefresh=0
 baseurl=${RUDDER_REPO_URL}
-type=rpm-md
-keeppackages=0
-EOF
-
-# Add Rudder 2.6-nightly repository
-cat > /etc/zypp/repos.d/Rudder2.6-nightly.repo << EOF
-[Rudder_${RUDDER_VERSION26_NIGHTLY}]
-name=Rudder ${RUDDER_VERSION26_NIGHTLY} Repository
-baseurl=${RUDDER_REPO_URL26_NIGHTLY}
-enabled=0
-autorefresh=0
 type=rpm-md
 keeppackages=0
 EOF
