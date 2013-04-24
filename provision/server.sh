@@ -81,8 +81,8 @@ echo "deb-src http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >
 
 echo "deb ${RUDDER_REPO_URL} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
 echo "#deb ${RUDDER_REPO_URL25} ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
-echo "#deb ${RUDDER_REPO_URL26} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
-echo "#deb ${RUDDER_REPO_URL26_NIGHTLY} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
+echo "#deb ${RUDDER_REPO_URL26} ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
+echo "#deb ${RUDDER_REPO_URL26_NIGHTLY} ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
 
 # Update APT cache
 aptitude update
