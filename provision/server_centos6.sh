@@ -20,12 +20,11 @@
 ## Config stage
 
 # Rudder version
-RUDDER_VERSION="2.5"
-RUDDER_VERSION26="2.6"
+RUDDER_VERSION="2.6"
 RUDDER_VERSION26_NIGHTLY="2.6-nightly"
+
 # Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/RHEL_6/"
-RUDDER_REPO_URL26="http://www.rudder-project.org/rpm-2.6/RHEL_6/"
+RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.6/RHEL_6/"
 RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/rpm-2.6-nightly/RHEL_6/"
 
 YUM_ARGS="-y --nogpgcheck"
@@ -67,14 +66,6 @@ baseurl=${RUDDER_REPO_URL}
 enabled=1
 gpgcheck=0
 " > /etc/yum.repos.d/rudder.repo
-
-# Add Rudder 2.6 repository
-echo "[Rudder_${RUDDER_VERSION26}]
-name=Rudder ${RUDDER_VERSION26} Repository
-baseurl=${RUDDER_REPO_URL26}
-enabled=0
-gpgcheck=0
-" > /etc/yum.repos.d/rudder2.6.repo
 
 # Add Rudder 2.6-nightly repository
 echo "[Rudder_${RUDDER_VERSION26_NIGHTLY}]
