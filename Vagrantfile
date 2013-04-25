@@ -102,4 +102,23 @@ Vagrant::Config.run do |config|
   end
 
 
+  # Ubuntu 12.10 boxes
+  config.vm.define :server_ubuntu do |ubuntu_server_config|
+    ubuntu_server_config.vm.box = "ubuntu12.10"
+    ubuntu_server_config.vm.box_url = "http://static.aldoborrero.com/vagrant/quantal64.box"
+    ubuntu_server_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
+    ubuntu_server_config.vm.forward_port  80, 8080
+    ubuntu_server_config.vm.network :hostonly, "192.168.42.10"
+    ubuntu_server_config.vm.provision :shell, :path => "provision/server_ubuntu.sh"
+  end
+
+  config.vm.define :node1_ubuntu do |ubuntu_node_config|
+    ubuntu_node_config.vm.box = "ubuntu12.10"
+    ubuntu_node_config.vm.box_url = "http://static.aldoborrero.com/vagrant/quantal64.box"
+    ubuntu_node_config.vm.network :hostonly, "192.168.42.11"
+    ubuntu_node_config.vm.provision :shell, :path => "provision/node.sh"
+  end
+
+
+
 end
