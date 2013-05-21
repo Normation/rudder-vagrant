@@ -51,6 +51,17 @@ type=rpm-md
 keeppackages=0
 EOF
 
+# Add Rudder repository
+cat > /etc/zypp/repos.d/Rudder2.6-nightly.repo <<EOF
+[Rudder${RUDDER_VERSION26_NIGHTLY}Nightly]
+name=Rudder ${RUDDER_VERSION26_NIGHTLY} Nightly RPM
+enabled=0
+autorefresh=0
+baseurl=${RUDDER_REPO_URL26_NIGHTLY}
+type=rpm-md
+keeppackages=0
+EOF
+
 # Add Sles 11 repository
 cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
 [SUSE_SLES-11_SP1]

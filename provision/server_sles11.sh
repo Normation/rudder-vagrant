@@ -25,7 +25,6 @@ RUDDER_VERSION="2.6-nightly"
 # Fetch parameters
 RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.6-nightly/RHEL_6/"
 
-
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
 # Rudder related parameters
@@ -70,7 +69,7 @@ keeppackages=0
 EOF
 
 
-# Add Sles 11 repository
+# Add Sles 11 repositories
 cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
 [SUSE_SLES-11_SP1]
 name=Official released updates for SUSE Linux Enterprise 11 SP1
@@ -80,6 +79,18 @@ gpgcheck=1
 gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
 enabled=1
 EOF
+cat > /etc/zypp/repos.d/SUSE_SLE-11_SP1_SDK.repo <<EOF
+[SUSE_SLE-11_SP1_SDK]
+name=Official SUSE Linux Enterprise 11 SP1 SDK
+type=yast2
+baseurl=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/
+enabled=1
+autorefresh=0
+keeppackages=0
+EOF
+
+# Remove DVD repository
+zypper rr "SUSE-Linux-Enterprise-Server-11-SP1 11.1.1-1.152"
 
 # Refresh zypper
 zypper ${ZYPPER_ARGS} refresh

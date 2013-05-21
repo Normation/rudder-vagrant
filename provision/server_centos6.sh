@@ -65,7 +65,6 @@ enabled=1
 gpgcheck=0
 " > /etc/yum.repos.d/rudder.repo
 
-
 # Set SElinux as permissive
 setenforce 0
 service iptables stop
