@@ -29,7 +29,6 @@ RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/SLES_11_SP1/"
 RUDDER_REPO_URL26="http://www.rudder-project.org/rpm-2.6/SLES_11/"
 RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/rpm-2.6-nightly/SLES_11/"
 
-
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
 # Rudder related parameters
@@ -109,10 +108,10 @@ EOF
 cat > /etc/zypp/repos.d/SUSE_SLE-11_SP1_SDK.repo <<EOF
 [SUSE_SLE-11_SP1_SDK]
 name=Official SUSE Linux Enterprise 11 SP1 SDK
+type=yast2
+baseurl=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/
 enabled=1
 autorefresh=0
-baseurl=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/
-type=yast2
 keeppackages=0
 EOF
 
