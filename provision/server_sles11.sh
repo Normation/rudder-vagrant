@@ -24,8 +24,8 @@ RUDDER_VERSION="2.6"
 RUDDER_VERSION26_NIGHTLY="2.6-nightly"
 
 # Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.6/SLES_11/"
-RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/rpm-2.6-nightly/SLES_11/"
+RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.6/SLES_11_SP1/"
+RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/rpm-2.6-nightly/SLES_11_SP1/"
 
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
