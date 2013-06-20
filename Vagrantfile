@@ -65,32 +65,34 @@ Vagrant.configure("2") do |config|
     :server => "server_centos6.sh",
     :node   => "node_centos6.sh"
   }
-  os = [ debian6, sles11, ubuntu12_10, centos6 ]
+
+  centos5 = {
+    :name   => "centos5",
+    :box    => "centos5",
+    :url    => "http://www.lyricalsoftware.com/downloads/centos-5.7-x86_64.box",
+    :node   => "node_centos5.sh"
+  }
+
+  os = [ debian6, sles11, ubuntu12_10, centos6, centos5]
   server = { :ip       => "192.168.42.10",
              :hostname => "server"
            }
-  # Debian boxes
 
-#  config.vm.define :debian do |debian|
 
-    # Every Vagrant virtual environment requires a box to build off of.
- #   debian.vm.box = "debian-squeeze-64"
-
-    # The url from where the 'config.vm.box' box will be fetched if it
-    # doesn't already exist on the user's system.
-  #  debian.vm.box_url = "http://dl.dropbox.com/u/937870/VMs/squeeze64.box"
   os.each { |os| 
-    config.vm.define ("server_"+os[:name]).to_sym do |server_config|
-      server_config.vm.box =  os[:box]
-      server_config.vm.box_url = os[:url]
-      server_config.vm.provider :virtualbox do |vb|
-        vb.customize ["modifyvm", :id, "--memory", "1024"]
+    if os[:server] 
+      config.vm.define ("server_"+os[:name]).to_sym do |server_config|
+        server_config.vm.box =  os[:box]
+        server_config.vm.box_url = os[:url]
+        server_config.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id, "--memory", "1024"]
+        end
+        server_config.vm.network :forwarded_port, guest: 80, host: 8080
+        server_config.vm.network :private_network, ip: server[:ip]
+        server_config.vm.hostname = server[:hostname]
+        server_config.vm.provision :shell, :path => "provision/"+os[:server]
       end
-      server_config.vm.network :forwarded_port, guest: 80, host: 8080
-      server_config.vm.network :private_network, ip: server[:ip]
-      server_config.vm.hostname = server[:hostname]
-      server_config.vm.provision :shell, :path => "provision/"+os[:server]
-      end
+    end
 
     (1..10).each { |i|
       n = i.to_s()
