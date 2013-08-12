@@ -22,15 +22,8 @@
 
 # Rudder version
 RUDDER_VERSION="2.4"
-RUDDER_VERSION25="2.5"
 RUDDER_VERSION26="2.6"
-RUDDER_VERSION26_NIGHTLY="2.6"
-
-# Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.4/SLES_11_SP1/"
-RUDDER_REPO_URL25="http://www.rudder-project.org/rpm-2.5/SLES_11_SP1/"
-RUDDER_REPO_URL26="http://www.rudder-project.org/rpm-2.6/SLES_11_SP1/"
-RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/rpm-2.6-nightly/SLES_11_SP1/"
+RUDDER_VERSION27="2.7"
 
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
@@ -47,45 +40,35 @@ echo "node1" > /etc/HOSTNAME
 sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
+# Add Rudder repository
 cat > /etc/zypp/repos.d/Rudder.repo <<EOF
-[Rudder${RUDDER_VERSION}Nightly]
-name=Rudder ${RUDDER_VERSION} Nightly RPM
+[Rudder${RUDDER_VERSION}]
+name=Rudder ${RUDDER_VERSION} RPM
 enabled=1
 autorefresh=0
-baseurl=${RUDDER_REPO_URL}
-type=rpm-md
-keeppackages=0
-EOF
-
-# Add Rudder repository
-cat > /etc/zypp/repos.d/Rudder2.5.repo <<EOF
-[Rudder${RUDDER_VERSION25}Nightly]
-name=Rudder ${RUDDER_VERSION25} Nightly RPM
-enabled=0
-autorefresh=0
-baseurl=${RUDDER_REPO_URL25}
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/SLES_11_SP1/
 type=rpm-md
 keeppackages=0
 EOF
 
 # Add Rudder 2.6 repository
-cat > /etc/zypp/repos.d/Rudder2.6.repo <<EOF
-[Rudder${RUDDER_VERSION26}Nightly]
-name=Rudder ${RUDDER_VERSION26} Nightly RPM
+cat > /etc/zypp/repos.d/Rudder2.6.repo << EOF
+[Rudder_${RUDDER_VERSION26}]
+name=Rudder ${RUDDER_VERSION26} Repository
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION26}/SLES_11_SP1/
 enabled=0
 autorefresh=0
-baseurl=${RUDDER_REPO_URL26}
 type=rpm-md
 keeppackages=0
 EOF
 
-# Add Rudder repository
-cat > /etc/zypp/repos.d/Rudder2.6-nightly.repo <<EOF
-[Rudder${RUDDER_VERSION26_NIGHTLY}Nightly]
-name=Rudder ${RUDDER_VERSION26_NIGHTLY} Nightly RPM
+# Add Rudder 2.7 repository
+cat > /etc/zypp/repos.d/Rudder2.7-nightly.repo << EOF
+[Rudder_${RUDDER_VERSION27}]
+name=Rudder ${RUDDER_VERSION27} Repository
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION27}/SLES_11_SP1/
 enabled=0
 autorefresh=0
-baseurl=${RUDDER_REPO_URL26_NIGHTLY}
 type=rpm-md
 keeppackages=0
 EOF

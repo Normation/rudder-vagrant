@@ -23,9 +23,8 @@
 KEYSERVER=keyserver.ubuntu.com
 KEY=474A19E8
 RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.4/"
-RUDDER_REPO_URL25="http://www.rudder-project.org/apt-2.5/"
 RUDDER_REPO_URL26="http://www.rudder-project.org/apt-2.6/"
-RUDDER_REPO_URL26_NIGHTLY="http://www.rudder-project.org/apt-2.6-nightly/"
+RUDDER_REPO_URL27="http://www.rudder-project.org/apt-2.7/"
 
 # Rudder related parameters
 SERVER_INSTANCE_HOST="server.rudder.local"
@@ -58,8 +57,6 @@ echo -e "\n192.168.42.18	node8.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.19	node9.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.20	node10.rudder.local" >> /etc/hosts
 
-echo "server" > /etc/hostname
-hostname server
 
 # Install lsb-release so we can guess which Debian version are we operating on.
 aptitude update && aptitude ${APTITUDE_ARGS} install lsb-release
@@ -73,9 +70,8 @@ wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo 
 
 
 echo "deb ${RUDDER_REPO_URL} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
-echo "#deb ${RUDDER_REPO_URL25} ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
 echo "#deb ${RUDDER_REPO_URL26} ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
-echo "#deb ${RUDDER_REPO_URL26_NIGHTLY} ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
+echo "#deb ${RUDDER_REPO_URL27} ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
 
 # Update APT cache
 aptitude update
