@@ -19,10 +19,10 @@
 
 ## Config stage
 
-# Rudder version
-RUDDER_VERSION="2.7"
-
-ZYPPER_ARGS="--non-interactive --no-gpg-checks"
+# Fetch parameters
+KEYSERVER=keyserver.ubuntu.com
+KEY=474A19E8
+RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.7/"
 
 # Rudder related parameters
 SERVER_INSTANCE_HOST="server.rudder.local"
@@ -30,6 +30,9 @@ DEMOSAMPLE="no"
 LDAPRESET="yes"
 INITPRORESET="yes"
 ALLOWEDNETWORK[0]='192.168.42.0/24'
+
+# Misc
+APTITUDE_ARGS="--assume-yes"
 
 # Showtime
 # Editing anything below might create a time paradox which would
@@ -40,8 +43,8 @@ ALLOWEDNETWORK[0]='192.168.42.0/24'
 # This machine is "server", with the FQDN "server.rudder.local".
 # It has this IP : 192.168.42.10 (See the Vagrantfile)
 
-sed -i "s%^127\.0\.0\.1.*%127\.0\.0\.1\tserver\.rudder\.local\tserver%" /etc/hosts
-echo -e "\n192.168.42.11	node.rudder.local" >> /etc/hosts
+sed -i "s%^127\.0\.1\.1.*%127\.0\.1\.1\tserver\.rudder\.local\tserver%" /etc/hosts
+echo -e "\n192.168.42.11	node1.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.12	node2.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.13	node3.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.14	node4.rudder.local" >> /etc/hosts
@@ -51,62 +54,51 @@ echo -e "\n192.168.42.17	node7.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.18	node8.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.19	node9.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.20	node10.rudder.local" >> /etc/hosts
-echo "server" > /etc/HOSTNAME
-hostname server
 
-# Add Rudder repository
-cat > /etc/zypp/repos.d/Rudder.repo <<EOF
-[Rudder${RUDDER_VERSION}]
-name=Rudder ${RUDDER_VERSION} RPM
-enabled=1
-autorefresh=0
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/SLES_11_SP1/
-type=rpm-md
-keeppackages=0
-EOF
+# Install lsb-release so we can guess which Debian version are we operating on.
+aptitude update && aptitude ${APTITUDE_ARGS} install lsb-release
+DEBIAN_RELEASE=$(lsb_release -cs)
 
-# Add Sles 11 repositories
-cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
-[SUSE_SLES-11_SP1]
-name=Official released updates for SUSE Linux Enterprise 11 SP1
-type=yast2
-baseurl=http://support.ednet.ns.ca/sles/11x86_64/
-gpgcheck=1
-gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
-enabled=1
-EOF
-cat > /etc/zypp/repos.d/SUSE_SLE-11_SP1_SDK.repo <<EOF
-[SUSE_SLE-11_SP1_SDK]
-name=Official SUSE Linux Enterprise 11 SP1 SDK
-type=yast2
-baseurl=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/
-enabled=1
-autorefresh=0
-keeppackages=0
-EOF
+##Accept Java Licence
+echo sun-java6-jre shared/accepted-sun-dlj-v1-1 select true | /usr/bin/debconf-set-selections
 
-# Remove DVD repository
-zypper rr "SUSE-Linux-Enterprise-Server-11-SP1 11.1.1-1.152"
+# Accept the Rudder repository key
+wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo apt-key add -
 
-# Refresh zypper
-zypper ${ZYPPER_ARGS} refresh
 
-# Install Rudder
-zypper ${ZYPPER_ARGS} install rudder-server-root
+echo "deb ${RUDDER_REPO_URL} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
+
+# Update APT cache
+aptitude update
+
+#Packages required by Rudder
+aptitude ${APTITUDE_ARGS} install rudder-server-root
 
 # Initialize Rudder
 /opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
 
-# Edit the base url parameter of Rudder to this Vagrant machine fully qualified name no need for 2.5
+# Edit the base url parameter of Rudder to this Vagrant machine fully qualified name don't need for 2.5
 # sed -i s%^base\.url\=.*%base\.url\=http\:\/\/server\.rudder\.local\:8080\/rudder% /opt/rudder/etc/rudder-web.properties
 
-# Add licenses (don't think it's needed anymore)
-# cp licenses.xml /opt/rudder/etc/licenses/
+# Add licenses
+cp licenses.xml /opt/rudder/etc/licenses/
 
 # Start the rudder web service
-/etc/init.d/jetty restart < /dev/null > /dev/null 2>&1
+/etc/init.d/jetty restart
 
 # Start the CFEngine backend
-/etc/init.d/rudder-agent restart
+/etc/init.d/cfengine-community restart
+
+echo '0,5,10,15,20,25,30,35,40,45,50,55 * * * * root if [ `ps -efww | grep cf-execd | grep "/var/rudder/cfengine-community/bin/cf-execd" | grep -v grep | wc -l` -eq 0 ]; then /var/rudder/cfengine-community/bin/cf-execd; fi' >> /etc/crontab
+
+# Set password to default passwords, if you need an easy access.
+#if [ -e /opt/rudder/etc/rudder-passwords.conf ] ; then
+#  sed -i "s/\(RUDDER_WEBDAV_PASSWORD:\).*/\1rudder/" /opt/rudder/etc/rudder-passwords.conf
+#  sed -i "s/\(RUDDER_PSQL_PASSWORD:\).*/\1Normation/" /opt/rudder/etc/rudder-passwords.conf
+#  sed -i "s/\(RUDDER_OPENLDAP_BIND_PASSWORD:\).*/\1secret/" /opt/rudder/etc/rudder-passwords.conf
+#fi
+
+# Run cf-agent to set passwords to default
+/var/rudder/cfengine-community/bin/cf-agent
 
 echo "Rudder server install: FINISHED" |tee /tmp/rudder.log

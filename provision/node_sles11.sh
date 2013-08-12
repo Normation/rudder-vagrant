@@ -21,10 +21,7 @@
 
 
 # Rudder version
-RUDDER_VERSION="2.5"
-
-# Fetch parameters
-RUDDER_REPO_URL="http://www.rudder-project.org/rpm-2.5/SLES_11_SP1"
+RUDDER_VERSION="2.7"
 
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
@@ -41,12 +38,13 @@ echo "node1" > /etc/HOSTNAME
 sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
+# Add Rudder repository
 cat > /etc/zypp/repos.d/Rudder.repo <<EOF
-[Rudder${RUDDER_VERSION}Nightly]
-name=Rudder ${RUDDER_VERSION} Nightly RPM
+[Rudder${RUDDER_VERSION}]
+name=Rudder ${RUDDER_VERSION} RPM
 enabled=1
 autorefresh=0
-baseurl=${RUDDER_REPO_URL}
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/SLES_11_SP1/
 type=rpm-md
 keeppackages=0
 EOF

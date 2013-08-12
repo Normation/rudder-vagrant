@@ -1,6 +1,6 @@
 #!/bin/bash
 #####################################################################################
-# Copyright 2012 Normation SAS
+# Copyright 2013 Normation SAS
 #####################################################################################
 #
 # This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 # Rudder version
 RUDDER_VERSION="2.7"
 
-ZYPPER_ARGS="--non-interactive --no-gpg-checks"
+YUM_ARGS="-y --nogpgcheck"
 
 # Rudder related parameters
 SERVER_INSTANCE_HOST="server.rudder.local"
@@ -40,7 +40,7 @@ ALLOWEDNETWORK[0]='192.168.42.0/24'
 # This machine is "server", with the FQDN "server.rudder.local".
 # It has this IP : 192.168.42.10 (See the Vagrantfile)
 
-sed -i "s%^127\.0\.0\.1.*%127\.0\.0\.1\tserver\.rudder\.local\tserver%" /etc/hosts
+sed -i "s%^127\.0\.0\.1.*%127\.0\.0\.1\tlocalhost localhost.localdomain server\.rudder\.local\tserver%" /etc/hosts
 echo -e "\n192.168.42.11	node.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.12	node2.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.13	node3.rudder.local" >> /etc/hosts
@@ -51,54 +51,32 @@ echo -e "\n192.168.42.17	node7.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.18	node8.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.19	node9.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.20	node10.rudder.local" >> /etc/hosts
-echo "server" > /etc/HOSTNAME
+sed -ri 's#^HOSTNAME=.*#HOSTNAME=server#' /etc/sysconfig/network
 hostname server
 
 # Add Rudder repository
-cat > /etc/zypp/repos.d/Rudder.repo <<EOF
-[Rudder${RUDDER_VERSION}]
-name=Rudder ${RUDDER_VERSION} RPM
+echo "[Rudder_${RUDDER_VERSION}]
+name=Rudder ${RUDDER_VERSION} Repository
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/RHEL_6/
 enabled=1
-autorefresh=0
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/SLES_11_SP1/
-type=rpm-md
-keeppackages=0
-EOF
+gpgcheck=0
+" > /etc/yum.repos.d/rudder.repo
 
-# Add Sles 11 repositories
-cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
-[SUSE_SLES-11_SP1]
-name=Official released updates for SUSE Linux Enterprise 11 SP1
-type=yast2
-baseurl=http://support.ednet.ns.ca/sles/11x86_64/
-gpgcheck=1
-gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
-enabled=1
-EOF
-cat > /etc/zypp/repos.d/SUSE_SLE-11_SP1_SDK.repo <<EOF
-[SUSE_SLE-11_SP1_SDK]
-name=Official SUSE Linux Enterprise 11 SP1 SDK
-type=yast2
-baseurl=http://support.ednet.ns.ca/sles/SLE-11-SP1-SDK-x86_64/
-enabled=1
-autorefresh=0
-keeppackages=0
-EOF
-
-# Remove DVD repository
-zypper rr "SUSE-Linux-Enterprise-Server-11-SP1 11.1.1-1.152"
+# Set SElinux as permissive
+setenforce 0
+service iptables stop
 
 # Refresh zypper
-zypper ${ZYPPER_ARGS} refresh
+yum ${YUM_ARGS} check-update
 
 # Install Rudder
-zypper ${ZYPPER_ARGS} install rudder-server-root
+yum ${YUM_ARGS} install rudder-server-root
 
 # Initialize Rudder
 /opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
 
 # Edit the base url parameter of Rudder to this Vagrant machine fully qualified name no need for 2.5
-# sed -i s%^base\.url\=.*%base\.url\=http\:\/\/server\.rudder\.local\:8080\/rudder% /opt/rudder/etc/rudder-web.properties
+sed -i s%^base\.url\=.*%base\.url\=http\:\/\/server\.rudder\.local\:8080\/rudder% /opt/rudder/etc/rudder-web.properties
 
 # Add licenses (don't think it's needed anymore)
 # cp licenses.xml /opt/rudder/etc/licenses/

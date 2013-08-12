@@ -22,7 +22,7 @@
 # Fetch parameters
 KEYSERVER=keyserver.ubuntu.com
 KEY=474A19E8
-RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.5/"
+RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.7/"
 
 # Rudder related parameters
 SERVER_INSTANCE_HOST="server.rudder.local"
@@ -55,8 +55,6 @@ echo -e "\n192.168.42.18	node8.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.19	node9.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.20	node10.rudder.local" >> /etc/hosts
 
-echo "server" > /etc/hostname
-hostname server
 
 # Install lsb-release so we can guess which Debian version are we operating on.
 aptitude update && aptitude ${APTITUDE_ARGS} install lsb-release

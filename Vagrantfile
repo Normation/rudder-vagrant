@@ -19,18 +19,12 @@
 #
 #####################################################################################
 
-Vagrant::Config.run do |config|
+
+Vagrant.configure("2") do |config|
 
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
-
-  # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "debian-squeeze-64"
-
-  # The url from where the 'config.vm.box' box will be fetched if it
-  # doesn't already exist on the user's system.
-  config.vm.box_url = "http://dl.dropbox.com/u/937870/VMs/squeeze64.box"
 
   # Boot with a GUI so you can see the screen. (Default is headless)
   # config.vm.boot_mode = :gui
@@ -41,48 +35,77 @@ Vagrant::Config.run do |config|
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
 
 
-  # Debian boxes
-  config.vm.define :server do |server_config|
-    server_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
-    server_config.vm.forward_port  80, 8080
-    server_config.vm.network :hostonly, "192.168.42.10"
-    server_config.vm.provision :shell, :path => "provision/server.sh"
-  end
+  debian6 = {
+    :name   => "debian",
+    :box    => "debian-squeeze-64",
+    :url    => "http://dl.dropbox.com/u/937870/VMs/squeeze64.box",
+    :server => "server.sh",
+    :node   => "node.sh"
+  }
 
-  config.vm.define :node1 do |node_config|
-    node_config.vm.network :hostonly, "192.168.42.11"
-    node_config.vm.host_name = "node1"
-    node_config.vm.provision :shell, :path => "provision/node.sh"
-  end
+  sles11 = {
+    :name   => "sles",
+    :box    => "sles-11-64",
+    :url    => "http://puppetlabs.s3.amazonaws.com/pub/sles11sp1_64.box",
+    :server => "server_sles11.sh",
+    :node   => "node_sles11.sh"
+  }
 
-  config.vm.define :node2 do |node_config|
-    node_config.vm.network :hostonly, "192.168.42.12"
-    node_config.vm.host_name = "node2"
-    node_config.vm.provision :shell, :path => "provision/node.sh"
-  end
+  ubuntu12_10 = {
+    :name   => "ubuntu",
+    :box    => "ubuntu12.10",
+    :url    => "http://static.aldoborrero.com/vagrant/quantal64.box",
+    :server => "server_ubuntu.sh",
+    :node   => "node_ubuntu.sh"
+  }
 
-  config.vm.define :node3 do |node_config|
-    node_config.vm.network :hostonly, "192.168.42.13"
-    node_config.vm.host_name = "node3"
-    node_config.vm.provision :shell, :path => "provision/node.sh"
-  end
+  centos6 = {
+    :name   => "centos",
+    :box    => "centos6",
+    :url    => "http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.3-x86_64-v20130101.box",
+    :server => "server_centos6.sh",
+    :node   => "node_centos6.sh"
+  }
 
-  # SLES 11 SP1 boxes
-  config.vm.define :server_sles11 do |server_config|
-    config.vm.box = "sles-11-64"
-    config.vm.box_url = "http://puppetlabs.s3.amazonaws.com/pub/sles11sp1_64.box"
-    server_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
-    server_config.vm.forward_port  80, 8080
-    server_config.vm.network :hostonly, "192.168.42.10"
-    server_config.vm.provision :shell, :path => "provision/server_sles11.sh"
-  end
+  centos5 = {
+    :name   => "centos5",
+    :box    => "centos5",
+    :url    => "http://www.lyricalsoftware.com/downloads/centos-5.7-x86_64.box",
+    :node   => "node_centos5.sh"
+  }
 
-  config.vm.define :node1_sles11 do |node_config|
-    config.vm.box = "sles-11-64"
-    config.vm.box_url = "http://puppetlabs.s3.amazonaws.com/pub/sles11sp1_64.box"
-    node_config.vm.network :hostonly, "192.168.42.11"
-    node_config.vm.provision :shell, :path => "provision/node_sles11.sh"
-  end
+  os = [ debian6, sles11, ubuntu12_10, centos6, centos5]
+  server = { :ip       => "192.168.42.10",
+             :hostname => "server"
+           }
 
 
+  os.each { |os| 
+    if os[:server] 
+      config.vm.define ("server_"+os[:name]).to_sym do |server_config|
+        server_config.vm.box =  os[:box]
+        server_config.vm.box_url = os[:url]
+        server_config.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id, "--memory", "1024"]
+        end
+        server_config.vm.network :forwarded_port, guest: 80, host: 8080
+        server_config.vm.network :private_network, ip: server[:ip]
+        server_config.vm.hostname = server[:hostname]
+        server_config.vm.provision :shell, :path => "provision/"+os[:server]
+      end
+    end
+
+    (1..10).each { |i|
+      n = i.to_s()
+      config.vm.define ("node"+n+"_"+os[:name]).to_sym do |node_config|
+        node_config.vm.provision :shell, :path => "provision/"+os[:node]
+        node_config.vm.network :private_network, ip: "192.168.42.1"+n
+        node_config.vm.box =  os[:box]
+        node_config.vm.box_url = os[:url]
+        node_config.vm.provider :virtualbox
+        node_config.vm.hostname = "node"+n
+      end
+    }
+  }
 end
+
