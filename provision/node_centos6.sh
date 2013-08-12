@@ -1,6 +1,6 @@
 #!/bin/bash
 #####################################################################################
-# Copyright 2013 Normation SAS
+# Copyright 2012 Normation SAS
 #####################################################################################
 #
 # This program is free software: you can redistribute it and/or modify
@@ -25,35 +25,18 @@ RUDDER_VERSION27="2.7"
 
 YUM_ARGS="-y --nogpgcheck"
 
-# Rudder related parameters
-SERVER_INSTANCE_HOST="server.rudder.local"
-DEMOSAMPLE="no"
-LDAPRESET="yes"
-INITPRORESET="yes"
-ALLOWEDNETWORK[0]='192.168.42.0/24'
-
 # Showtime
 # Editing anything below might create a time paradox which would
 # destroy the very fabric of our reality and maybe hurt kittens.
 # Be responsible, please think of the kittens.
 
 # Host preparation:
-# This machine is "server", with the FQDN "server.rudder.local".
-# It has this IP : 192.168.42.10 (See the Vagrantfile)
+# This machine is "node", with the FQDN "node.rudder.local".
+# It has this IP : 192.168.42.11 (See the Vagrantfile)
 
-sed -i "s%^127\.0\.0\.1.*%127\.0\.0\.1\tlocalhost localhost.localdomain server\.rudder\.local\tserver%" /etc/hosts
-echo -e "\n192.168.42.11	node.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.12	node2.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.13	node3.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.14	node4.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.15	node5.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.16	node6.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.17	node7.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.18	node8.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.19	node9.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.20	node10.rudder.local" >> /etc/hosts
-sed -ri 's#^HOSTNAME=.*#HOSTNAME=server#' /etc/sysconfig/network
-hostname server
+echo "node" > /etc/hostname
+sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
+echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
 # Add Rudder repository
 echo "[Rudder_${RUDDER_VERSION}]
@@ -70,6 +53,8 @@ baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION27}/RHEL_6/
 enabled=0
 gpgcheck=0
 " > /etc/yum.repos.d/rudder2.7.repo
+EOF
+
 
 
 # Set SElinux as permissive
@@ -80,21 +65,12 @@ service iptables stop
 yum ${YUM_ARGS} check-update
 
 # Install Rudder
-yum ${YUM_ARGS} install rudder-server-root
+yum ${YUM_ARGS} install rudder-agent
 
-# Initialize Rudder
-/opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
+# Set the IP of the rudder master
+echo "192.168.42.10" > /var/rudder/cfengine-community/policy_server.dat
 
-# Edit the base url parameter of Rudder to this Vagrant machine fully qualified name no need for 2.5
-sed -i s%^base\.url\=.*%base\.url\=http\:\/\/server\.rudder\.local\:8080\/rudder% /opt/rudder/etc/rudder-web.properties
-
-# Add licenses (don't think it's needed anymore)
-# cp licenses.xml /opt/rudder/etc/licenses/
-
-# Start the rudder web service
-/etc/init.d/jetty restart < /dev/null > /dev/null 2>&1
-
-# Start the CFEngine backend
+# Start the CFEngine agent
 /etc/init.d/rudder-agent restart
 
-echo "Rudder server install: FINISHED" |tee /tmp/rudder.log
+echo "Rudder node install: FINISHED" |tee /tmp/rudder.log

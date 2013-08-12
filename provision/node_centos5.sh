@@ -20,11 +20,13 @@
 ## Config stage
 
 
+
 # Rudder version
 RUDDER_VERSION="2.6"
 RUDDER_VERSION27="2.7"
 
-ZYPPER_ARGS="--non-interactive --no-gpg-checks"
+
+YUM_ARGS="-y --nogpgcheck"
 
 # Showtime
 # Editing anything below might create a time paradox which would
@@ -35,53 +37,41 @@ ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 # This machine is "node", with the FQDN "node.rudder.local".
 # It has this IP : 192.168.42.11 (See the Vagrantfile)
 
-echo "node1" > /etc/HOSTNAME
+echo "node" > /etc/hostname
 sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
 # Add Rudder repository
-cat > /etc/zypp/repos.d/Rudder.repo <<EOF
-[Rudder${RUDDER_VERSION}]
-name=Rudder ${RUDDER_VERSION} RPM
+echo "[Rudder_${RUDDER_VERSION}]
+name=Rudder ${RUDDER_VERSION} Repository
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/RHEL_6/
 enabled=1
-autorefresh=0
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/SLES_11_SP1/
-type=rpm-md
-keeppackages=0
-EOF
+gpgcheck=0
+" > /etc/yum.repos.d/rudder.repo
 
 # Add Rudder 2.7 repository
-cat > /etc/zypp/repos.d/Rudder2.7.repo << EOF
-[Rudder_${RUDDER_VERSION27}]
-name=Rudder ${RUDDER_VERSION27} Repository
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION27}/SLES_11_SP1/
+echo "[Rudder_${RUDDER_VERSION26_NIGHTLY}]
+name=Rudder ${RUDDER_VERSION26_NIGHTLY} Repository
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION27}/RHEL_6/
 enabled=0
-autorefresh=0
-type=rpm-md
-keeppackages=0
-EOF
+gpgcheck=0
+" > /etc/yum.repos.d/rudder2.7.repo
 
-# Add Sles 11 repository
-cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
-[SUSE_SLES-11_SP1]
-name=Official released updates for SUSE Linux Enterprise 11 SP1
-type=yast2
-baseurl=http://support.ednet.ns.ca/sles/11x86_64/
-gpgcheck=1
-gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
-enabled=1
-EOF
 
-# Refresh Zypper
-zypper ${ZYPPER_ARGS} refresh
+# Set SElinux as permissive
+setenforce 0
+service iptables stop
 
-# Install Rudder agent
-zypper ${ZYPPER_ARGS} install rudder-agent
+# Refresh zypper
+yum ${YUM_ARGS} check-update
+
+# Install Rudder
+yum ${YUM_ARGS} install rudder-agent
 
 # Set the IP of the rudder master
 echo "192.168.42.10" > /var/rudder/cfengine-community/policy_server.dat
 
 # Start the CFEngine agent
-/etc/init.d/rudder-agent start
+/etc/init.d/rudder-agent restart
 
 echo "Rudder node install: FINISHED" |tee /tmp/rudder.log

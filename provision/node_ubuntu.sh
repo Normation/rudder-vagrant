@@ -19,12 +19,14 @@
 
 ## Config stage
 
+# Fetch parameters
+KEYSERVER=keyserver.ubuntu.com
+KEY=474A19E8
+RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.6/"
+RUDDER_REPO_URL27="http://www.rudder-project.org/apt-2.7/"
 
-# Rudder version
-RUDDER_VERSION="2.6"
-RUDDER_VERSION27="2.7"
-
-ZYPPER_ARGS="--non-interactive --no-gpg-checks"
+# Misc
+APTITUDE_ARGS="--assume-yes"
 
 # Showtime
 # Editing anything below might create a time paradox which would
@@ -35,48 +37,27 @@ ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 # This machine is "node", with the FQDN "node.rudder.local".
 # It has this IP : 192.168.42.11 (See the Vagrantfile)
 
-echo "node1" > /etc/HOSTNAME
 sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
-# Add Rudder repository
-cat > /etc/zypp/repos.d/Rudder.repo <<EOF
-[Rudder${RUDDER_VERSION}]
-name=Rudder ${RUDDER_VERSION} RPM
-enabled=1
-autorefresh=0
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/SLES_11_SP1/
-type=rpm-md
-keeppackages=0
-EOF
 
-# Add Rudder 2.7 repository
-cat > /etc/zypp/repos.d/Rudder2.7.repo << EOF
-[Rudder_${RUDDER_VERSION27}]
-name=Rudder ${RUDDER_VERSION27} Repository
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION27}/SLES_11_SP1/
-enabled=0
-autorefresh=0
-type=rpm-md
-keeppackages=0
-EOF
+# Install lsb-release so we can guess which Debian version are we operating on.
+aptitude update && aptitude ${APTITUDE_ARGS} install lsb-release
+DEBIAN_RELEASE=$(lsb_release -cs)
 
-# Add Sles 11 repository
-cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
-[SUSE_SLES-11_SP1]
-name=Official released updates for SUSE Linux Enterprise 11 SP1
-type=yast2
-baseurl=http://support.ednet.ns.ca/sles/11x86_64/
-gpgcheck=1
-gpgkey=http://support.ednet.ns.ca/sles/11x86_64/pubring.gpg
-enabled=1
-EOF
+# Accept the Rudder repository key
+wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo apt-key add -
 
-# Refresh Zypper
-zypper ${ZYPPER_ARGS} refresh
+#APT configuration
 
-# Install Rudder agent
-zypper ${ZYPPER_ARGS} install rudder-agent
+echo "deb ${RUDDER_REPO_URL} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
+echo "#deb ${RUDDER_REPO_URL27} ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
+
+# Update APT cache
+aptitude update
+
+#Packages required by Rudder
+aptitude ${APTITUDE_ARGS} install rudder-agent
 
 # Set the IP of the rudder master
 echo "192.168.42.10" > /var/rudder/cfengine-community/policy_server.dat
