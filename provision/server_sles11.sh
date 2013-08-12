@@ -20,8 +20,7 @@
 ## Config stage
 
 # Rudder version
-RUDDER_VERSION="2.6"
-RUDDER_VERSION27="2.7"
+RUDDER_VERSION="2.7"
 
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
@@ -65,18 +64,6 @@ baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/SLES_11_SP1/
 type=rpm-md
 keeppackages=0
 EOF
-
-# Add Rudder 2.7 repository
-cat > /etc/zypp/repos.d/Rudder2.7-nightly.repo << EOF
-[Rudder_${RUDDER_VERSION27}]
-name=Rudder ${RUDDER_VERSION27} Repository
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION27}/SLES_11_SP1/
-enabled=0
-autorefresh=0
-type=rpm-md
-keeppackages=0
-EOF
-
 
 # Add Sles 11 repositories
 cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
