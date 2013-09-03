@@ -19,12 +19,6 @@
 
 ## Config stage
 
-
-
-# Rudder version
-RUDDER_VERSION="2.7"
-
-
 YUM_ARGS="-y --nogpgcheck"
 
 # Showtime
@@ -40,13 +34,22 @@ echo "node" > /etc/hostname
 sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
-# Add Rudder repository
-echo "[Rudder_${RUDDER_VERSION}]
-name=Rudder ${RUDDER_VERSION} Repository
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/RHEL_6/
+# Add Rudder stable repository
+echo "[Rudder_Stable]
+name=Rudder stable Repository
+baseurl=http://www.rudder-project.org/rpm-stable/RHEL_5/
 enabled=1
 gpgcheck=0
-" > /etc/yum.repos.d/rudder.repo
+" > /etc/yum.repos.d/rudder_stable.repo
+
+# Add Rudder latest repository
+echo "[Rudder_Latest]
+name=Rudder latest Repository
+baseurl=http://www.rudder-project.org/rpm-latest/RHEL_5/
+enabled=0
+gpgcheck=0
+" > /etc/yum.repos.d/rudder_latest.repo
+
 
 # Set SElinux as permissive
 setenforce 0

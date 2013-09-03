@@ -54,16 +54,25 @@ echo -e "\n192.168.42.20	node10.rudder.local" >> /etc/hosts
 echo "server" > /etc/HOSTNAME
 hostname server
 
-# Add Rudder repository
-cat > /etc/zypp/repos.d/Rudder.repo <<EOF
-[Rudder${RUDDER_VERSION}]
-name=Rudder ${RUDDER_VERSION} RPM
+# Add Rudder stable repository
+echo "[Rudder_Stable]
+name=Rudder stable Repository
 enabled=1
 autorefresh=0
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/SLES_11_SP1/
+baseurl=http://www.rudder-project.org/rpm-stable/SLES_11_SP1
 type=rpm-md
 keeppackages=0
-EOF
+" > /etc/yum.repos.d/rudder_stable.repo
+
+# Add Rudder latest repository
+echo "[Rudder_Latest]
+name=Rudder latest Repository
+enabled=0
+autorefresh=0
+baseurl=http://www.rudder-project.org/rpm-latest/SLES_11_SP1/
+type=rpm-md
+keeppackages=0
+" > /etc/yum.repos.d/rudder_latest.repo
 
 # Add Sles 11 repositories
 cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF

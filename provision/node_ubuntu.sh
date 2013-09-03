@@ -22,7 +22,8 @@
 # Fetch parameters
 KEYSERVER=keyserver.ubuntu.com
 KEY=474A19E8
-RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.7/"
+STABLE_URL="http://www.rudder-project.org/apt-stable/"
+LATEST_URL="http://www.rudder-project.org/apt-latest/"
 
 # Misc
 APTITUDE_ARGS="--assume-yes"
@@ -49,7 +50,8 @@ wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo 
 
 #APT configuration
 
-echo "deb ${RUDDER_REPO_URL} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
+echo "deb ${STABLE_URL} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
+echo "#deb ${LATEST_URL} ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
 
 # Update APT cache
 aptitude update
