@@ -45,7 +45,7 @@ echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 # Add Rudder repository
 echo "[Rudder_${RUDDER_VERSION}]
 name=Rudder ${RUDDER_VERSION} Repository
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/RHEL_6/
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/RHEL_5/
 enabled=1
 gpgcheck=0
 " > /etc/yum.repos.d/rudder.repo
@@ -53,7 +53,7 @@ gpgcheck=0
 # Add Rudder 2.6 repository
 echo "[Rudder_${RUDDER_VERSION26}]
 name=Rudder ${RUDDER_VERSION26} Repository
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION26}/RHEL_6/
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION26}/RHEL_5/
 enabled=0
 gpgcheck=0
 " > /etc/yum.repos.d/rudder2.6.repo
@@ -61,7 +61,7 @@ gpgcheck=0
 # Add Rudder 2.7 repository
 echo "[Rudder_${RUDDER_VERSION26_NIGHTLY}]
 name=Rudder ${RUDDER_VERSION26_NIGHTLY} Repository
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION27}/RHEL_6/
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION27}/RHEL_5/
 enabled=0
 gpgcheck=0
 " > /etc/yum.repos.d/rudder2.7.repo
