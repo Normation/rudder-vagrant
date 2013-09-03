@@ -55,7 +55,7 @@ gpgcheck=0
 setenforce 0
 service iptables stop
 
-# Refresh zypper
+# Refresh yum 
 yum ${YUM_ARGS} check-update
 
 # Install Rudder
