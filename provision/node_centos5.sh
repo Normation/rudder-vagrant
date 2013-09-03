@@ -43,7 +43,7 @@ echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 # Add Rudder repository
 echo "[Rudder_${RUDDER_VERSION}]
 name=Rudder ${RUDDER_VERSION} Repository
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/RHEL_6/
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/RHEL_5/
 enabled=1
 gpgcheck=0
 " > /etc/yum.repos.d/rudder.repo
@@ -52,7 +52,7 @@ gpgcheck=0
 setenforce 0
 service iptables stop
 
-# Refresh zypper
+# Refresh yum 
 yum ${YUM_ARGS} check-update
 
 # Install Rudder
