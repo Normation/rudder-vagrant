@@ -19,10 +19,6 @@
 
 ## Config stage
 
-# Rudder version
-RUDDER_VERSION="2.6"
-RUDDER_VERSION27="2.7"
-
 YUM_ARGS="-y --nogpgcheck"
 
 # Rudder related parameters
@@ -55,21 +51,22 @@ echo -e "\n192.168.42.20	node10.rudder.local" >> /etc/hosts
 sed -ri 's#^HOSTNAME=.*#HOSTNAME=server#' /etc/sysconfig/network
 hostname server
 
-# Add Rudder repository
-echo "[Rudder_${RUDDER_VERSION}]
+
+# Add Rudder repositories
+for RUDDER_VERSION in 2.4 2.6 2.7 2.8
+do
+	if [ "${RUDDER_VERSION}" == "2.4" ]; then
+		ENABLED=1
+    else
+    	ENABLED=0
+    fi
+    echo "[Rudder_${RUDDER_VERSION}]
 name=Rudder ${RUDDER_VERSION} Repository
 baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/RHEL_6/
-enabled=1
+enabled=${ENABLED}
 gpgcheck=0
-" > /etc/yum.repos.d/rudder.repo
-
-# Add Rudder 2.7 repository
-echo "[Rudder_${RUDDER_VERSION26_NIGHTLY}]
-name=Rudder ${RUDDER_VERSION26_NIGHTLY} Repository
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION27}/RHEL_6/
-enabled=0
-gpgcheck=0
-" > /etc/yum.repos.d/rudder2.7.repo
+" > /etc/yum.repos.d/rudder${RUDDER_VERSION}.repo
+done
 
 
 # Set SElinux as permissive
