@@ -40,38 +40,24 @@ echo "node1" > /etc/HOSTNAME
 sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
-# Add Rudder repository
-cat > /etc/zypp/repos.d/Rudder.repo <<EOF
-[Rudder${RUDDER_VERSION}]
+# Add Rudder repositories
+for RUDDER_VERSION in 2.4 2.6 2.7 2.8
+do
+	if [ "${RUDDER_VERSION}" == "2.4" ]; then
+		ENABLED=1
+    else
+    	ENABLED=0
+    fi
+    echo "[Rudder${RUDDER_VERSION}]
 name=Rudder ${RUDDER_VERSION} RPM
-enabled=1
+enabled=${ENABLED}
 autorefresh=0
 baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/SLES_11_SP1/
 type=rpm-md
 keeppackages=0
-EOF
+" > /etc/zypp/repos.d/rudder${RUDDER_VERSION}.repo
+done
 
-# Add Rudder 2.6 repository
-cat > /etc/zypp/repos.d/Rudder2.6.repo << EOF
-[Rudder_${RUDDER_VERSION26}]
-name=Rudder ${RUDDER_VERSION26} Repository
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION26}/SLES_11_SP1/
-enabled=0
-autorefresh=0
-type=rpm-md
-keeppackages=0
-EOF
-
-# Add Rudder 2.7 repository
-cat > /etc/zypp/repos.d/Rudder2.7-nightly.repo << EOF
-[Rudder_${RUDDER_VERSION27}]
-name=Rudder ${RUDDER_VERSION27} Repository
-baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION27}/SLES_11_SP1/
-enabled=0
-autorefresh=0
-type=rpm-md
-keeppackages=0
-EOF
 
 # Add Sles 11 repository
 cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
