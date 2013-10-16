@@ -22,7 +22,6 @@
 # Fetch parameters
 KEYSERVER=keyserver.ubuntu.com
 KEY=474A19E8
-RUDDER_REPO_URL="http://www.rudder-project.org/apt-2.7/"
 
 # Rudder related parameters
 SERVER_INSTANCE_HOST="server.rudder.local"
@@ -74,7 +73,15 @@ echo "deb-src http://security.debian.org/ ${DEBIAN_RELEASE}/updates main" >> /et
 echo "deb http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >> /etc/apt/sources.list
 echo "deb-src http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >> /etc/apt/sources.list
 
-echo "deb ${RUDDER_REPO_URL} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
+#Rudder repositories
+for RUDDER_VERSION in 2.7 2.8
+do
+	if [ "${RUDDER_VERSION}" == "2.7" ]; then
+		echo "deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
+    else
+		echo "#deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
+    fi
+done
 
 # Update APT cache
 aptitude update

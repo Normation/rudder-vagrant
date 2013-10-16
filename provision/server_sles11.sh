@@ -19,9 +19,6 @@
 
 ## Config stage
 
-# Rudder version
-RUDDER_VERSION="2.7"
-
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
 # Rudder related parameters
@@ -54,16 +51,23 @@ echo -e "\n192.168.42.20	node10.rudder.local" >> /etc/hosts
 echo "server" > /etc/HOSTNAME
 hostname server
 
-# Add Rudder repository
-cat > /etc/zypp/repos.d/Rudder.repo <<EOF
-[Rudder${RUDDER_VERSION}]
+# Add Rudder repositories
+for RUDDER_VERSION in 2.7 2.8
+do
+	if [ "${RUDDER_VERSION}" == "2.7" ]; then
+		ENABLED=1
+    else
+    	ENABLED=0
+    fi
+    echo "[Rudder${RUDDER_VERSION}]
 name=Rudder ${RUDDER_VERSION} RPM
-enabled=1
+enabled=${ENABLED}
 autorefresh=0
 baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/SLES_11_SP1/
 type=rpm-md
 keeppackages=0
-EOF
+" > /etc/zypp/repos.d/rudder${RUDDER_VERSION}.repo
+done
 
 # Add Sles 11 repositories
 cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
