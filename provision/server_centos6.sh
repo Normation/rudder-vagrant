@@ -53,9 +53,9 @@ hostname server
 
 
 # Add Rudder repositories
-for RUDDER_VERSION in 2.4 2.6 2.7 2.8
+for RUDDER_VERSION in 2.6 2.7 2.8
 do
-	if [ "${RUDDER_VERSION}" == "2.4" ]; then
+	if [ "${RUDDER_VERSION}" == "2.6" ]; then
 		ENABLED=1
     else
     	ENABLED=0
