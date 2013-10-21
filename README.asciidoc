@@ -64,10 +64,10 @@ git clone https://github.com/Normation/rudder-vagrant.git && cd rudder-vagrant
 
 Then you can use the Vagrant environment at will:
 
-* To launch the complete environment: server and node
+* To launch a complete environment (server and node based on debian)
 
 ----
-vagrant up # To launch the complete environment: server and node
+vagrant up server_debian node1_debian
 ----
 
 NOTE: Your rudder environment is available at: http://server.rudder.local:8080/
@@ -78,13 +78,65 @@ Rudder's web interface in the node acceptation pane.
 If you are in a hurry, run a /opt/rudder/sbin/cf-agent on the node, and on the
 server to make things go a bit faster.
 
+=== Available machines
+
+We try to provide all systems supported by Rudder with rudder-vagrant.
+
+You can launch at the same time, one server Rudder and up to ten nodes.
+
+Use as _vagrant up_ parameters:
+
+* To up a server: *server_[OS_name]*
+* To up a node: *node[1-10]_[OS_name]*
+
+Systems that support both server and nodes:
+
+* Debian 6, name used: *debian*
+* Centos 6, name used: *centos*
+* Ubuntu 12.04, name used: *ubuntu*
+* SLES 11, name used: *sles*
+
+Systems that support only nodes:
+
+* Centos 5, name used: *centos5*
+
+All informations above a are summarized in the table below:
+[width="40%",frame="topbot",options="header"]
+|=======
+| *OS*        | *Name*  | *Available machines*
+| Debian6     | debian  | Server and nodes
+| Centos6     | centos  | Server and nodes
+| Ubunu 12.04 | ubuntu  | Server and nodes
+| SLES 11     | sles    | Server and nodes
+| Centos5     | centos5 | Nodes only
+|=======
+
+=== Available versions
+
+Each branch of this project allow you to create a Rudder server in a specific version.
+It also adds disabled newer versions repositories, so you can upgrade easily your nodes and server by enabling them.
+
+Branch *master* always points to stable release of Rudder, and adds latest repository. (As of Oct. 2013, stable version is 2.6.x and latest is 2.7.x)
+
+There is also a branch for each version released: *branches/rudder/X*, based on version X, and with possible upgrades to version > X
+
+All informations above a are summarized in the table below:
+[width="40%",frame="topbot",options="header"]
+|=======      
+| *Branch*    | *Based on*   | *Available upgrade*
+| master      | stable (2.6) | latest (2.7)
+| branches/rudder/2.8 | 2.8  | N/A
+| branches/rudder/2.7 | 2.7  | 2.8
+| branches/rudder/2.6 | 2.6  | 2.7, 2.8
+| branches/rudder/2.4 | 2.4  | 2.6, 2.7, 2.8
+|=======
 
 === Command reference for Vagrant
 
 * Launch selectively one machine:
 
 ----
-vagrant up server
+vagrant up server_debian
 ----
 
 * Cleanly shutdown the VMs (issuing a "vagrant up" after that does not deploy the
@@ -112,5 +164,5 @@ likely to make Rudder output odd reports if you do not have an active NTP daemon
 * Open an SSH shell connection to a machine
 
 ----
-vagrant ssh server
+vagrant ssh server_debian
 ----
