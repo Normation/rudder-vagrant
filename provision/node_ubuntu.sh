@@ -22,8 +22,6 @@
 # Fetch parameters
 KEYSERVER=keyserver.ubuntu.com
 KEY=474A19E8
-STABLE_URL="http://www.rudder-project.org/apt-stable/"
-LATEST_URL="http://www.rudder-project.org/apt-latest/"
 
 # Misc
 APTITUDE_ARGS="--assume-yes"
@@ -48,10 +46,15 @@ DEBIAN_RELEASE=$(lsb_release -cs)
 # Accept the Rudder repository key
 wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo apt-key add -
 
-#APT configuration
-
-echo "deb ${STABLE_URL} ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
-echo "#deb ${LATEST_URL} ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
+# Rudder repositories
+for RUDDER_VERSION in stable latest
+do
+	if [ "${RUDDER_VERSION}" == "stable" ]; then
+		echo "deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
+    else
+		echo "#deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
+    fi
+done
 
 # Update APT cache
 aptitude update

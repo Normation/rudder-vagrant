@@ -19,7 +19,6 @@
 
 ## Config stage
 
-
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 
 # Showtime
@@ -35,25 +34,23 @@ echo "node1" > /etc/HOSTNAME
 sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
-# Add Rudder stable repository
-echo "[Rudder_Stable]
-name=Rudder stable Repository
-enabled=1
+# Add Rudder repositories
+for RUDDER_VERSION in stable latest
+do
+	if [ "${RUDDER_VERSION}" == "stable" ]; then
+		ENABLED=1
+    else
+    	ENABLED=0
+    fi
+    echo "[Rudder${RUDDER_VERSION}]
+name=Rudder ${RUDDER_VERSION} RPM
+enabled=${ENABLED}
 autorefresh=0
-baseurl=http://www.rudder-project.org/rpm-stable/SLES_11_SP1
+baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/SLES_11_SP1
 type=rpm-md
 keeppackages=0
-" > /etc/yum.repos.d/rudder_stable.repo
-
-# Add Rudder latest repository
-echo "[Rudder_Latest]
-name=Rudder latest Repository
-enabled=0
-autorefresh=0
-baseurl=http://www.rudder-project.org/rpm-latest/SLES_11_SP1/
-type=rpm-md
-keeppackages=0
-" > /etc/yum.repos.d/rudder_latest.repo
+" > /etc/zypp/repos.d/rudder${RUDDER_VERSION}.repo
+done
 
 # Add Sles 11 repository
 cat > /etc/zypp/repos.d/SUSE-SP1.repo <<EOF
