@@ -30,8 +30,7 @@ YUM_ARGS="-y --nogpgcheck"
 # This machine is "node", with the FQDN "node.rudder.local".
 # It has this IP : 192.168.42.11 (See the Vagrantfile)
 
-echo "node" > /etc/hostname
-sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t$(cat /etc/hostname)%"" /etc/hosts
+sed -ri "s/^127\.0\.0\.1[\t ]+(node[0-9]+)(.*)/127\.0\.0\.1\\t\1\.rudder\.local\2/" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
 # Add Rudder repositories
