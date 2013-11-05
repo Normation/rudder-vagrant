@@ -37,8 +37,8 @@ ALLOWEDNETWORK[0]='192.168.42.0/24'
 # This machine is "server", with the FQDN "server.rudder.local".
 # It has this IP : 192.168.42.10 (See the Vagrantfile)
 
-sed -i "s%^127\.0\.0\.1.*%127\.0\.0\.1\tlocalhost localhost.localdomain server\.rudder\.local\tserver%" /etc/hosts
-echo -e "\n192.168.42.11	node.rudder.local" >> /etc/hosts
+sed -ri "s/^127\.0\.0\.1[\t ]+server(.*)$/127\.0\.0\.1\tserver\.rudder\.local\1/" /etc/hosts
+echo -e "\n192.168.42.11	node1.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.12	node2.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.13	node3.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.14	node4.rudder.local" >> /etc/hosts
