@@ -101,16 +101,4 @@ zypper ${ZYPPER_ARGS} install rudder-server-root
 # Initialize Rudder
 /opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
 
-# Edit the base url parameter of Rudder to this Vagrant machine fully qualified name no need for 2.5
-# sed -i s%^base\.url\=.*%base\.url\=http\:\/\/server\.rudder\.local\:8080\/rudder% /opt/rudder/etc/rudder-web.properties
-
-# Add licenses (don't think it's needed anymore)
-# cp licenses.xml /opt/rudder/etc/licenses/
-
-# Start the rudder web service
-/etc/init.d/jetty restart < /dev/null > /dev/null 2>&1
-
-# Start the CFEngine backend
-/etc/init.d/rudder-agent restart
-
 echo "Rudder server install: FINISHED" |tee /tmp/rudder.log
