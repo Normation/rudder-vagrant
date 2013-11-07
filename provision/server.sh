@@ -92,28 +92,4 @@ aptitude ${APTITUDE_ARGS} install rudder-server-root
 # Initialize Rudder
 /opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
 
-# Edit the base url parameter of Rudder to this Vagrant machine fully qualified name don't need for 2.5
-# sed -i s%^base\.url\=.*%base\.url\=http\:\/\/server\.rudder\.local\:8080\/rudder% /opt/rudder/etc/rudder-web.properties
-
-# Add licenses
-cp licenses.xml /opt/rudder/etc/licenses/
-
-# Start the rudder web service
-/etc/init.d/jetty restart
-
-# Start the CFEngine backend
-/etc/init.d/cfengine-community restart
-
-echo '0,5,10,15,20,25,30,35,40,45,50,55 * * * * root if [ `ps -efww | grep cf-execd | grep "/var/rudder/cfengine-community/bin/cf-execd" | grep -v grep | wc -l` -eq 0 ]; then /var/rudder/cfengine-community/bin/cf-execd; fi' >> /etc/crontab
-
-# Set password to default passwords, if you need an easy access.
-#if [ -e /opt/rudder/etc/rudder-passwords.conf ] ; then
-#  sed -i "s/\(RUDDER_WEBDAV_PASSWORD:\).*/\1rudder/" /opt/rudder/etc/rudder-passwords.conf
-#  sed -i "s/\(RUDDER_PSQL_PASSWORD:\).*/\1Normation/" /opt/rudder/etc/rudder-passwords.conf
-#  sed -i "s/\(RUDDER_OPENLDAP_BIND_PASSWORD:\).*/\1secret/" /opt/rudder/etc/rudder-passwords.conf
-#fi
-
-# Run cf-agent to set passwords to default
-/var/rudder/cfengine-community/bin/cf-agent
-
 echo "Rudder server install: FINISHED" |tee /tmp/rudder.log
