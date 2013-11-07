@@ -43,6 +43,14 @@ Vagrant.configure("2") do |config|
     :node   => "node.sh"
   }
 
+  debian7 = {
+    :name   => "debian",
+    :box    => "debian-7.0-amd64-minimal",
+    :url    => "https://www.dropbox.com/s/gxouugzbnjlny1k/debian-7.0-amd64-minimal.box",
+    :server => "server.sh",
+    :node   => "node.sh"
+  }
+
   sles11 = {
     :name   => "sles",
     :box    => "sles-11-64",
@@ -74,7 +82,7 @@ Vagrant.configure("2") do |config|
     :node   => "node_centos5.sh"
   }
 
-  os = [ debian6, sles11, ubuntu12_10, centos6, centos5]
+  os = [ debian6, debian7, sles11, ubuntu12_10, centos6, centos5]
   server = { :ip       => "192.168.42.10",
              :hostname => "server"
            }
