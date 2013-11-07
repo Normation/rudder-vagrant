@@ -21,7 +21,7 @@ set -e
 
 ## Config stage
 
-YUM_ARGS="-y --nogpgcheck"
+YUM_ARGS="-y"
 
 # Rudder related parameters
 SERVER_INSTANCE_HOST="server.rudder.local"
@@ -66,17 +66,15 @@ do
 name=Rudder ${RUDDER_VERSION} Repository
 baseurl=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/RHEL_6/
 enabled=${ENABLED}
-gpgcheck=0
+gpgcheck=1
+gpgkey=http://www.rudder-project.org/rpm-${RUDDER_VERSION}/RHEL_6/repodata/repomd.xml.key
 " > /etc/yum.repos.d/rudder${RUDDER_VERSION}.repo
 done
 
 
 # Set SElinux as permissive
-setenforce 0
+setenforce 0 || true
 service iptables stop
-
-# Refresh zypper
-yum ${YUM_ARGS} check-update
 
 # Install Rudder
 yum ${YUM_ARGS} install rudder-server-root
