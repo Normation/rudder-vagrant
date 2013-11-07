@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
 
   debian6 = {
-    :name   => "debian",
+    :name   => "debian6",
     :box    => "debian-squeeze-64",
     :url    => "http://dl.dropbox.com/u/937870/VMs/squeeze64.box",
     :server => "server.sh",
