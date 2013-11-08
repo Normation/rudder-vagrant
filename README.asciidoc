@@ -64,7 +64,7 @@ git clone https://github.com/Normation/rudder-vagrant.git && cd rudder-vagrant
 
 Then you can use the Vagrant environment at will:
 
-* To launch a complete environment (server and node based on debian)
+* To launch a complete environment (server and node based on debian 7)
 
 ----
 vagrant up server_debian node1_debian
@@ -91,7 +91,8 @@ Use as _vagrant up_ parameters:
 
 Systems that support both server and nodes:
 
-* Debian 6, name used: *debian*
+* Debian 6, name used: *debian6*
+* Debian 7, name used: *debian*
 * Centos 6, name used: *centos*
 * Ubuntu 12.04, name used: *ubuntu*
 * SLES 11, name used: *sles*
@@ -103,12 +104,13 @@ Systems that support only nodes:
 All informations above a are summarized in the table below:
 [width="40%",frame="topbot",options="header"]
 |=======
-| *OS*        | *Name*  | *Available machines*
-| Debian6     | debian  | Server and nodes
-| Centos6     | centos  | Server and nodes
-| Ubunu 12.04 | ubuntu  | Server and nodes
-| SLES 11     | sles    | Server and nodes
-| Centos5     | centos5 | Nodes only
+| *OS*        | *Name*   | *Available machines*
+| Debian6     | debian6  | Server and nodes
+| Debian7     | debian   | Server and nodes
+| Centos6     | centos   | Server and nodes
+| Ubunu 12.04 | ubuntu   | Server and nodes
+| SLES 11     | sles     | Server and nodes
+| Centos5     | centos5  | Nodes only
 |=======
 
 === Available versions
@@ -124,7 +126,7 @@ All informations above a are summarized in the table below:
 [width="40%",frame="topbot",options="header"]
 |=======      
 | *Branch*    | *Based on*   | *Available upgrade*
-| master      | stable (2.6) | latest (2.7)
+| master      | stable (2.6) | latest (2.8)
 | branches/rudder/2.8 | 2.8  | N/A
 | branches/rudder/2.7 | 2.7  | 2.8
 | branches/rudder/2.6 | 2.6  | 2.7, 2.8
