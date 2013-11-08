@@ -95,4 +95,4 @@ aptitude ${APTITUDE_ARGS} install rudder-server-root
 /opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
 
 echo "Rudder server install: FINISHED" |tee /tmp/rudder.log
-echo "You can now access the Rudder web interface on http://localhost:8080/" |tee /tmp/rudder.log
+echo "You can now access the Rudder web interface on https://localhost:8081/" |tee /tmp/rudder.log

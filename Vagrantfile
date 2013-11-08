@@ -97,6 +97,7 @@ Vagrant.configure("2") do |config|
           vb.customize ["modifyvm", :id, "--memory", "1536"]
         end
         server_config.vm.network :forwarded_port, guest: 80, host: 8080
+        server_config.vm.network :forwarded_port, guest: 443, host: 8081
         server_config.vm.network :private_network, ip: server[:ip]
         server_config.vm.hostname = server[:hostname]
         server_config.vm.provision :shell, :path => "provision/"+os[:server]
