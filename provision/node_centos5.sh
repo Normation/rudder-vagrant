@@ -52,11 +52,13 @@ gpgcheck=0
 done
 
 # Set SElinux as permissive
-setenforce 0
-service iptables stop
+setenforce 0 || true
 
 # Refresh zypper
-yum ${YUM_ARGS} check-update
+yum ${YUM_ARGS} check-update || true
+
+#Install some dependencies
+yum ${YUM_ARGS} install pcre openssl db4-devel
 
 # Install Rudder
 yum ${YUM_ARGS} install rudder-agent

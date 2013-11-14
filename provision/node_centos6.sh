@@ -52,11 +52,11 @@ gpgcheck=0
 done
 
 # Set SElinux as permissive
-setenforce 0
+setenforce 0 || true
 service iptables stop
 
 # Refresh zypper
-yum ${YUM_ARGS} check-update
+yum ${YUM_ARGS} check-update || true
 
 # Install Rudder
 yum ${YUM_ARGS} install rudder-agent
