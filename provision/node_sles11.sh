@@ -35,7 +35,7 @@ sed -i ""s%^127\.0\.1\.1.*%127\.0\.1\.1\\t$(cat /etc/hostname)\.rudder\.local\\t
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
 # Add Rudder repositories
-for RUDDER_VERSION in stable latest
+for RUDDER_VERSION in 2.9
 do
 	if [ "${RUDDER_VERSION}" == "stable" ]; then
 		ENABLED=1
