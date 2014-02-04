@@ -36,12 +36,11 @@ sed -ri "s/^127\.0\.0\.1[\t ]+(node[0-9]+)(.*)/127\.0\.0\.1\\t\1\.rudder\.local\
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
 # Add Rudder repositories
-for RUDDER_VERSION in 2.6 2.7 2.8
-do
-	if [ "${RUDDER_VERSION}" == "2.6" ]; then
-		ENABLED=1
+for RUDDER_VERSION in 2.6 2.7 2.8 2.9
+    if [ "${RUDDER_VERSION}" == "2.6" ]; then
+        ENABLED=1
     else
-    	ENABLED=0
+        ENABLED=0
     fi
     echo "[Rudder_${RUDDER_VERSION}]
 name=Rudder ${RUDDER_VERSION} Repository
@@ -53,11 +52,11 @@ done
 
 
 # Set SElinux as permissive
-setenforce 0
+setenforce 0 || true
 service iptables stop
 
 # Refresh zypper
-yum ${YUM_ARGS} check-update
+yum ${YUM_ARGS} check-update || true
 
 # Install Rudder
 yum ${YUM_ARGS} install rudder-agent
