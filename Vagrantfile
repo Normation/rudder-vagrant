@@ -35,6 +35,15 @@ Vagrant.configure("2") do |config|
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
 
 
+  # VM declaration
+  # name   : VM os name in vagrant
+  # box    : Box name
+  # url    : URL where to fetch the box
+  # server : File to use as server provisionning script (they are in provision folder)
+  # node   : File to use as node provisionning script (they are in provision folder)
+
+  #################### SERVER BOXES ###########################
+
   debian6 = {
     :name   => "debian6",
     :box    => "debian-squeeze-64",
@@ -75,6 +84,9 @@ Vagrant.configure("2") do |config|
     :node   => "node_centos6.sh"
   }
 
+
+  #################### NODE BOXES ###########################
+
   centos5 = {
     :name   => "centos5",
     :box    => "centos5",
@@ -88,7 +100,8 @@ Vagrant.configure("2") do |config|
            }
 
 
-  os.each { |os| 
+  os.each { |os|
+    # Declare server boxes if server provisionning script is declared
     if os[:server] 
       config.vm.define ("server_"+os[:name]).to_sym do |server_config|
         server_config.vm.box =  os[:box]
