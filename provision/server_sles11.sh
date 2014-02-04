@@ -17,6 +17,8 @@
 #
 #####################################################################################
 
+set -e
+
 ## Config stage
 
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
@@ -54,10 +56,10 @@ hostname server
 # Add Rudder repositories
 for RUDDER_VERSION in 2.9
 do
-	if [ "${RUDDER_VERSION}" == "2.9" ]; then
-		ENABLED=1
+    if [ "${RUDDER_VERSION}" == "2.9" ]; then
+        ENABLED=1
     else
-    	ENABLED=0
+        ENABLED=0
     fi
     echo "[Rudder${RUDDER_VERSION}]
 name=Rudder ${RUDDER_VERSION} RPM
@@ -102,3 +104,4 @@ zypper ${ZYPPER_ARGS} install rudder-server-root
 /opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
 
 echo "Rudder server install: FINISHED" |tee /tmp/rudder.log
+echo "You can now access the Rudder web interface on https://localhost:8081/" |tee /tmp/rudder.log

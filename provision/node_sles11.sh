@@ -17,6 +17,8 @@
 #
 #####################################################################################
 
+set -e
+
 ## Config stage
 
 ZYPPER_ARGS="--non-interactive --no-gpg-checks"
@@ -36,10 +38,10 @@ echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 # Add Rudder repositories
 for RUDDER_VERSION in 2.9
 do
-	if [ "${RUDDER_VERSION}" == "2.9" ]; then
-		ENABLED=1
+    if [ "${RUDDER_VERSION}" == "2.9" ]; then
+        ENABLED=1
     else
-    	ENABLED=0
+        ENABLED=0
     fi
     echo "[Rudder${RUDDER_VERSION}]
 name=Rudder ${RUDDER_VERSION} RPM

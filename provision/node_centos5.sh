@@ -17,6 +17,8 @@
 #
 #####################################################################################
 
+set -e
+
 ## Config stage
 
 YUM_ARGS="-y --nogpgcheck"
@@ -36,10 +38,10 @@ echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 # Add Rudder repositories
 for RUDDER_VERSION in 2.9
 do
-	if [ "${RUDDER_VERSION}" == 2.9" ]; then
-		ENABLED=1
+    if [ "${RUDDER_VERSION}" == "2.9" ]; then
+        ENABLED=1
     else
-    	ENABLED=0
+        ENABLED=0
     fi
     echo "[Rudder_${RUDDER_VERSION}]
 name=Rudder ${RUDDER_VERSION} Repository
@@ -50,11 +52,13 @@ gpgcheck=0
 done
 
 # Set SElinux as permissive
-setenforce 0
-service iptables stop
+setenforce 0 || true
 
 # Refresh yum 
-yum ${YUM_ARGS} check-update
+yum ${YUM_ARGS} check-update || true
+
+#Install some dependencies
+yum ${YUM_ARGS} install pcre openssl db4-devel
 
 # Install Rudder
 yum ${YUM_ARGS} install rudder-agent

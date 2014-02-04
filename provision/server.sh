@@ -17,6 +17,8 @@
 #
 #####################################################################################
 
+set -e
+
 ## Config stage
 
 # Fetch parameters
@@ -76,10 +78,10 @@ echo "deb-src http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >
 #Rudder repositories
 for RUDDER_VERSION in 2.9
 do
-	if [ "${RUDDER_VERSION}" == "2.9" ]; then
-		echo "deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
+    if [ "${RUDDER_VERSION}" == "2.9" ]; then
+        echo "deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
     else
-		echo "#deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
+        echo "#deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
     fi
 done
 
@@ -93,3 +95,4 @@ aptitude ${APTITUDE_ARGS} install rudder-server-root
 /opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
 
 echo "Rudder server install: FINISHED" |tee /tmp/rudder.log
+echo "You can now access the Rudder web interface on https://localhost:8081/" |tee /tmp/rudder.log

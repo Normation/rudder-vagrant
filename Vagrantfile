@@ -35,10 +35,27 @@ Vagrant.configure("2") do |config|
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
 
 
+  # VM declaration
+  # name   : VM os name in vagrant
+  # box    : Box name
+  # url    : URL where to fetch the box
+  # server : File to use as server provisionning script (they are in provision folder)
+  # node   : File to use as node provisionning script (they are in provision folder)
+
+  #################### SERVER BOXES ###########################
+
   debian6 = {
-    :name   => "debian",
+    :name   => "debian6",
     :box    => "debian-squeeze-64",
     :url    => "http://dl.dropbox.com/u/937870/VMs/squeeze64.box",
+    :server => "server.sh",
+    :node   => "node.sh"
+  }
+
+  debian7 = {
+    :name   => "debian",
+    :box    => "debian-7.0-amd64-minimal",
+    :url    => "https://www.dropbox.com/s/gxouugzbnjlny1k/debian-7.0-amd64-minimal.box",
     :server => "server.sh",
     :node   => "node.sh"
   }
@@ -67,6 +84,9 @@ Vagrant.configure("2") do |config|
     :node   => "node_centos6.sh"
   }
 
+
+  #################### NODE BOXES ###########################
+
   centos5 = {
     :name   => "centos5",
     :box    => "centos5",
@@ -74,13 +94,14 @@ Vagrant.configure("2") do |config|
     :node   => "node_centos5.sh"
   }
 
-  os = [ debian6, sles11, ubuntu12_10, centos6, centos5]
+  os = [ debian6, debian7, sles11, ubuntu12_10, centos6, centos5]
   server = { :ip       => "192.168.42.10",
              :hostname => "server"
            }
 
 
-  os.each { |os| 
+  os.each { |os|
+    # Declare server boxes if server provisionning script is declared
     if os[:server] 
       config.vm.define ("server_"+os[:name]).to_sym do |server_config|
         server_config.vm.box =  os[:box]
@@ -89,6 +110,7 @@ Vagrant.configure("2") do |config|
           vb.customize ["modifyvm", :id, "--memory", "1536"]
         end
         server_config.vm.network :forwarded_port, guest: 80, host: 8080
+        server_config.vm.network :forwarded_port, guest: 443, host: 8081
         server_config.vm.network :private_network, ip: server[:ip]
         server_config.vm.hostname = server[:hostname]
         server_config.vm.provision :shell, :path => "provision/"+os[:server]
