@@ -36,7 +36,7 @@ echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 # Add Rudder repositories
 for RUDDER_VERSION in 2.9
 do
-	if [ "${RUDDER_VERSION}" == "stable" ]; then
+	if [ "${RUDDER_VERSION}" == 2.9" ]; then
 		ENABLED=1
     else
     	ENABLED=0

@@ -65,9 +65,9 @@ echo sun-java6-jre shared/accepted-sun-dlj-v1-1 select true | /usr/bin/debconf-s
 wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo apt-key add -
 
 #Rudder repositories
-for RUDDER_VERSION in stable lastest
+for RUDDER_VERSION in 2.9
 do
-	if [ "${RUDDER_VERSION}" == "stable" ]; then
+	if [ "${RUDDER_VERSION}" == "2.9" ]; then
 		echo "deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
     else
 		echo "#deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
