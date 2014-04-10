@@ -54,9 +54,9 @@ echo "server" > /etc/HOSTNAME
 hostname server
 
 # Add Rudder repositories
-for RUDDER_VERSION in 2.9
+for RUDDER_VERSION in 2.10
 do
-    if [ "${RUDDER_VERSION}" == "2.9" ]; then
+    if [ "${RUDDER_VERSION}" == "2.10" ]; then
         ENABLED=1
     else
         ENABLED=0
