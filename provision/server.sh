@@ -33,6 +33,9 @@ INITPRORESET="yes"
 ALLOWEDNETWORK[0]='192.168.42.0/24'
 
 # Misc
+# Make sure we don't run interactive commands
+export DEBIAN_FRONTEND=noninteractive
+
 APTITUDE_ARGS="--assume-yes"
 
 # Showtime
