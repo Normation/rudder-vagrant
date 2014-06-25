@@ -54,12 +54,12 @@ sed -ri 's#^HOSTNAME=.*#HOSTNAME=server#' /etc/sysconfig/network
 hostname server
 
 # Add Rudder repositories
-for RUDDER_VERSION in stable latest
+for RUDDER_VERSION in 2.10
 do
-	if [ "${RUDDER_VERSION}" == "stable" ]; then
-		ENABLED=1
+    if [ "${RUDDER_VERSION}" == "2.10" ]; then
+        ENABLED=1
     else
-    	ENABLED=0
+        ENABLED=0
     fi
     echo "[Rudder_${RUDDER_VERSION}]
 name=Rudder ${RUDDER_VERSION} Repository
