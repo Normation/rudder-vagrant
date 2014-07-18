@@ -27,6 +27,7 @@ KEY=474A19E8
 
 # Misc
 APTITUDE_ARGS="--assume-yes"
+export DEBIAN_FRONTEND=noninteractive
 
 # Showtime
 # Editing anything below might create a time paradox which would
