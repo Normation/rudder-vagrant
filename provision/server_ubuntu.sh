@@ -34,6 +34,7 @@ ALLOWEDNETWORK[0]='192.168.42.0/24'
 
 # Misc
 APTITUDE_ARGS="--assume-yes"
+export DEBIAN_FRONTEND=noninteractive
 
 # Showtime
 # Editing anything below might create a time paradox which would
