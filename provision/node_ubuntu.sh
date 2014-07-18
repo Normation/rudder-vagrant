@@ -49,7 +49,7 @@ DEBIAN_RELEASE=$(lsb_release -cs)
 wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo apt-key add -
 
 # Rudder repositories
-for RUDDER_VERSION in 2.6 2.7 2.8 2.9
+for RUDDER_VERSION in 2.6 2.10 2.11
 do
     if [ "${RUDDER_VERSION}" == "2.6" ]; then
         echo "deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main universe" > /etc/apt/sources.list.d/rudder.list
