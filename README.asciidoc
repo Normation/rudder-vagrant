@@ -29,6 +29,9 @@ Thank you for your interest in our project!
 The contribution process is detailed here: 
 http://www.rudder-project.org/HowToContribute
 
+If you found a bug, or have a feedback, you can open an issue on rudder-vagrant Redmine:
+http://www.rudder-project.org/redmine/projects/rudder-vagrant
+
 === Synopsis
 
 This git repository contains a Vagrant (http://www.vagrantup.com) configuration, enabling
