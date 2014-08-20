@@ -68,9 +68,9 @@ echo sun-java6-jre shared/accepted-sun-dlj-v1-1 select true | /usr/bin/debconf-s
 wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo apt-key add -
 
 #Rudder repositories
-for RUDDER_VERSION in 2.10
+for RUDDER_VERSION in latest
 do
-    if [ "${RUDDER_VERSION}" == "2.10" ]; then
+    if [ "${RUDDER_VERSION}" == "latest" ]; then
         echo "deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
     else
         echo "#deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
@@ -87,4 +87,4 @@ aptitude ${APTITUDE_ARGS} install rudder-server-root
 /opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
 
 echo "Rudder server install: FINISHED" |tee /tmp/rudder.log
-echo "You can now access the Rudder web interface on https://localhost:8081/" |tee /tmp/rudder.log
+echo "You can now access the Rudder web interface on https://192.168.42.10/" |tee /tmp/rudder.log

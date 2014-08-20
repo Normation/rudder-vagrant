@@ -44,14 +44,6 @@ Vagrant.configure("2") do |config|
 
   #################### SERVER BOXES ###########################
 
-  debian6 = {
-    :name   => "debian6",
-    :box    => "debian-squeeze-64",
-    :url    => "http://dl.dropbox.com/u/937870/VMs/squeeze64.box",
-    :server => "server.sh",
-    :node   => "node.sh"
-  }
-
   debian7 = {
     :name   => "debian",
     :box    => "debian-7.0-amd64-minimal",
@@ -68,10 +60,10 @@ Vagrant.configure("2") do |config|
     :node   => "node_sles11.sh"
   }
 
-  ubuntu12_10 = {
+  ubuntu12_04 = {
     :name   => "ubuntu",
-    :box    => "ubuntu12.10",
-    :url    => "http://static.aldoborrero.com/vagrant/quantal64.box",
+    :box    => "ubuntu12.04",
+    :url    => "https://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box",
     :server => "server_ubuntu.sh",
     :node   => "node_ubuntu.sh"
   }
@@ -87,6 +79,13 @@ Vagrant.configure("2") do |config|
 
   #################### NODE BOXES ###########################
 
+  debian6 = {
+    :name   => "debian6",
+    :box    => "debian-squeeze-64",
+    :url    => "http://dl.dropbox.com/u/937870/VMs/squeeze64.box",
+    :node   => "node.sh"
+  }
+
   centos5 = {
     :name   => "centos5",
     :box    => "centos5",
@@ -94,7 +93,7 @@ Vagrant.configure("2") do |config|
     :node   => "node_centos5.sh"
   }
 
-  os = [ debian6, debian7, sles11, ubuntu12_10, centos6, centos5]
+  os = [ debian6, debian7, sles11, ubuntu12_04, centos6, centos5]
   server = { :ip       => "192.168.42.10",
              :hostname => "server"
            }

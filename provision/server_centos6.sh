@@ -39,7 +39,7 @@ ALLOWEDNETWORK[0]='192.168.42.0/24'
 # This machine is "server", with the FQDN "server.rudder.local".
 # It has this IP : 192.168.42.10 (See the Vagrantfile)
 
-sed -ri "s/^127\.0\.0\.1[\t ]+server(.*)$/127\.0\.0\.1\tserver\.rudder\.local\1/" /etc/hosts
+echo "127.0.0.1	server.rudder.local server localhost" > /etc/hosts
 echo -e "\n192.168.42.11	node1.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.12	node2.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.13	node3.rudder.local" >> /etc/hosts
@@ -54,9 +54,9 @@ sed -ri 's#^HOSTNAME=.*#HOSTNAME=server#' /etc/sysconfig/network
 hostname server
 
 # Add Rudder repositories
-for RUDDER_VERSION in 2.10
+for RUDDER_VERSION in latest
 do
-    if [ "${RUDDER_VERSION}" == "2.10" ]; then
+    if [ "${RUDDER_VERSION}" == "latest" ]; then
         ENABLED=1
     else
         ENABLED=0
@@ -81,4 +81,4 @@ yum ${YUM_ARGS} install rudder-server-root
 /opt/rudder/bin/rudder-init.sh $SERVER_INSTANCE_HOST $DEMOSAMPLE $LDAPRESET $INITPRORESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
 
 echo "Rudder server install: FINISHED" |tee /tmp/rudder.log
-echo "You can now access the Rudder web interface on https://localhost:8081/" |tee /tmp/rudder.log
+echo "You can now access the Rudder web interface on https://192.168.42.10/" |tee /tmp/rudder.log
