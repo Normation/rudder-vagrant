@@ -25,7 +25,7 @@ set -e
 KEYSERVER=keyserver.ubuntu.com
 KEY=474A19E8
 
-# Rudder related parameters
+# Rudder related parameters
 SERVER_INSTANCE_HOST="server.rudder.local"
 DEMOSAMPLE="no"
 LDAPRESET="yes"
@@ -40,15 +40,15 @@ APTITUDE_ARGS="--assume-yes"
 export DEBIAN_FRONTEND=noninteractive
 
 # Showtime
-# Editing anything below might create a time paradox which would
-# destroy the very fabric of our reality and maybe hurt kittens.
+# Editing anything below might create a time paradox which would
+# destroy the very fabric of our reality and maybe hurt kittens.
 # Be responsible, please think of the kittens.
 
-# Host preparation:
-# This machine is "server", with the FQDN "server.rudder.local".
-# It has this IP : 192.168.42.10 (See the Vagrantfile)
+# Host preparation:
+# This machine is "server", with the FQDN "server.rudder.local".
+# It has this IP : 192.168.42.10 (See the Vagrantfile)
 
-sed -ri "s/^127\.0\.1\.1[\t ]+server(.*)$/127\.0\.1\.1\tserver\.rudder\.local\1/" /etc/hosts
+sed -ri "s/^127\.0\.0\.1[\t ]+server[\t ]+(.*)$/127\.0\.0\.1\tserver\.rudder\.local \1/" /etc/hosts
 echo -e "\n192.168.42.11	node1.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.12	node2.rudder.local" >> /etc/hosts
 echo -e "\n192.168.42.13	node3.rudder.local" >> /etc/hosts
@@ -89,7 +89,7 @@ do
     fi
 done
 
-# Update APT cache
+# Update APT cache
 aptitude update
 
 #Packages required by Rudder
