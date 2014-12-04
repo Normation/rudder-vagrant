@@ -15,7 +15,7 @@ Mailing list, irc:: http://www.rudder-project.org/foswiki/Community/
 
 Normation http://normation.com
 
-- Matthieu "Kegeruneku" Cerda matthieu.cerda@normation.com
+- Matthieu "Kegeruneku" CERDA matthieu.cerda@normation.com
 
 === License
 
@@ -28,6 +28,9 @@ http://www.gnu.org/licenses/gpl-3.0.txt
 Thank you for your interest in our project!
 The contribution process is detailed here: 
 http://www.rudder-project.org/HowToContribute
+
+To offer feedback or report bugs, you can use
+the tracker at: http://www.rudder-project.org/redmine/projects/rudder-vagrant
 
 === Synopsis
 
