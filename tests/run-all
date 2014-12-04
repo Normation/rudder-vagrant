@@ -1,0 +1,13 @@
+#!/bin/sh
+
+
+VAGRANT_DIR=$(dirname $(dirname $(readlink -f $0)))
+
+EXIT=0
+cd ${VAGRANT_DIR}
+
+./tests/test-url.sh
+EXIT=$((EXIT+$?))
+
+
+exit ${EXIT}
