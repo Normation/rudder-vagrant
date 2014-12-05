@@ -3,36 +3,26 @@ Rudder: configuration management for the masses
 
 This project is part of Rudder - configuration management for the masses.
  
-See: http://rudder-project.org for more information. 
+See: http://rudder-project.org for more information on Rudder.
 
-[horizontal]
-Screenshots:: http://www.rudder-project.org/foswiki/Screenshots/WebHome
-User documentation:: http://www.rudder-project.org/rudder-doc/rudder-doc.html
-Bug report:: http://www.rudder-project.org/redmine/projects/rudder/issues
-Mailing list, irc:: http://www.rudder-project.org/foswiki/Community/
+See: https://www.vagrantup.com for more information on vagrant.
 
-=== Authors
 
-Normation http://normation.com
 
-- Matthieu "Kegeruneku" Cerda matthieu.cerda@normation.com
-
-=== License
-
-This project is licensed under GPLv3 license, 
-see the provided "LICENSE" file or 
-http://www.gnu.org/licenses/gpl-3.0.txt
-
-=== Contributing
-
-Thank you for your interest in our project!
-The contribution process is detailed here: 
-http://www.rudder-project.org/HowToContribute
+This git repository contains a Vagrant configuration, enabling
+the user to launch from scratch a complete Rudder environment in a few minutes.
 
 === Synopsis
 
-This git repository contains a Vagrant (http://www.vagrantup.com) configuration, enabling
-the user to launch from scratch a complete Rudder environment in a few minutes.
+Have vagrant >=1.4 and VirtualBox
+
+----
+vagrant up server_ubuntu node1_ubuntu node2_centos
+----
+
+Connect to https://localhost:8081/
+* Login with: admin / admin
+
 
 === Requirements
 
@@ -67,10 +57,10 @@ Then you can use the Vagrant environment at will:
 * To launch a complete environment (server and node based on debian 7)
 
 ----
-vagrant up server_debian node1_debian
+vagrant up server_ubuntu node1_ubuntu
 ----
 
-NOTE: Your rudder environment is available at: http://server.rudder.local:8080/
+NOTE: Your Rudder environment is available at: http://server.rudder.local/
 
 NOTE: The node and the server are automatically set to communicate with each
 other, but you will have to wait approximately 10mn before the node appears in
@@ -79,6 +69,9 @@ If you are in a hurry, run a /opt/rudder/sbin/cf-agent on the node, and on the
 server to make things go a bit faster.
 
 === Available machines
+
+We try to keep vagrant boxes up to date, but they sometimes disapear from their respective sources.
+If you can't download a box, you should go to http://www.vagrantbox.es/ and replace the failing one in Vagrantfile with the url you found.
 
 We try to provide all systems supported by Rudder with rudder-vagrant.
 
@@ -168,3 +161,31 @@ likely to make Rudder output odd reports if you do not have an active NTP daemon
 ----
 vagrant ssh server_debian
 ----
+
+=== Authors
+
+Normation http://normation.com
+
+- Matthieu "Kegeruneku" Cerda matthieu.cerda@normation.com
+- Vincent Membré vincent.membre@normation.com
+- Benoit Peccatte benoit.peccatte@normation.com
+
+=== License
+
+This project is licensed under GPLv3 license, 
+see the provided "LICENSE" file or 
+http://www.gnu.org/licenses/gpl-3.0.txt
+
+=== Contributing
+
+Thank you for your interest in our project!
+The contribution process is detailed here: 
+http://www.rudder-project.org/HowToContribute
+
+[horizontal]
+Screenshots:: http://www.rudder-project.org/foswiki/Screenshots/WebHome
+User documentation:: http://www.rudder-project.org/rudder-doc/rudder-doc.html
+Bug report:: http://www.rudder-project.org/redmine/projects/rudder/issues
+Mailing list, irc:: http://www.rudder-project.org/foswiki/Community/
+
+
