@@ -58,7 +58,7 @@ echo "deb http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >> /e
 echo "deb-src http://ftp.fr.debian.org/debian/ ${DEBIAN_RELEASE}-updates main" >> /etc/apt/sources.list
 
 # Rudder repositories
-for RUDDER_VERSION in 2.10 2.11
+for RUDDER_VERSION in 2.10 2.11 3.0
 do
     if [ "${RUDDER_VERSION}" == "2.10" ]; then
         echo "deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
