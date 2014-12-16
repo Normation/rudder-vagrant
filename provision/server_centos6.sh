@@ -54,9 +54,9 @@ sed -ri 's#^HOSTNAME=.*#HOSTNAME=server#' /etc/sysconfig/network
 hostname server
 
 # Add Rudder repositories
-for RUDDER_VERSION in 2.11
+for RUDDER_VERSION in 3.0
 do
-    if [ "${RUDDER_VERSION}" == "2.11" ]; then
+    if [ "${RUDDER_VERSION}" == "3.0" ]; then
         ENABLED=1
     else
         ENABLED=0
