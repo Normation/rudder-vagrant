@@ -36,7 +36,7 @@ sed -ri "s/^127\.0\.0\.1[\t ]+(node[0-9]+)[\t ]+(.*)/127\.0\.0\.1\\t\1\.rudder\.
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
 # Add Rudder repositories
-for RUDDER_VERSION in 2.11
+for RUDDER_VERSION in 2.11 3.0
 do
     if [ "${RUDDER_VERSION}" == "2.11" ]; then
         ENABLED=1
