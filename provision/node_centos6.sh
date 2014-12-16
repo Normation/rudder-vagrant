@@ -24,15 +24,15 @@ set -e
 YUM_ARGS="-y --nogpgcheck"
 
 # Showtime
-# Editing anything below might create a time paradox which would
-# destroy the very fabric of our reality and maybe hurt kittens.
+# Editing anything below might create a time paradox which would
+# destroy the very fabric of our reality and maybe hurt kittens.
 # Be responsible, please think of the kittens.
 
-# Host preparation:
-# This machine is "node", with the FQDN "node.rudder.local".
-# It has this IP : 192.168.42.11 (See the Vagrantfile)
+# Host preparation:
+# This machine is "node", with the FQDN "node.rudder.local".
+# It has this IP : 192.168.42.11 (See the Vagrantfile)
 
-sed -ri "s/^127\.0\.0\.1[\t ]+(node[0-9]+)(.*)/127\.0\.0\.1\\t\1\.rudder\.local\2/" /etc/hosts
+sed -ri "s/^127\.0\.0\.1[\t ]+(node[0-9]+)[\t ]+(.*)/127\.0\.0\.1\\t\1\.rudder\.local \2/" /etc/hosts
 echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
 
 # Add Rudder repositories
@@ -61,7 +61,7 @@ yum ${YUM_ARGS} check-update || true
 # Install Rudder
 yum ${YUM_ARGS} install rudder-agent
 
-# Set the IP of the rudder master
+# Set the IP of the rudder master
 echo "192.168.42.10" > /var/rudder/cfengine-community/policy_server.dat
 
 # Start the CFEngine agent
