@@ -47,7 +47,7 @@ Vagrant.configure("2") do |config|
   debian7 = {
     :name   => "debian",
     :box    => "debian-7.0-amd64-minimal",
-    :url    => "https://www.dropbox.com/s/gxouugzbnjlny1k/debian-7.0-amd64-minimal.box",
+    :url    => "https://dl.dropboxusercontent.com/s/xymcvez85i29lym/vagrant-debian-wheezy64.box"
     :server => "server.sh",
     :node   => "node.sh"
   }
