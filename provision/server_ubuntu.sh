@@ -71,14 +71,20 @@ wget --quiet -O- "http://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | sudo 
 for RUDDER_VERSION in latest
 do
     if [ "${RUDDER_VERSION}" == "latest" ]; then
-        echo "deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" > /etc/apt/sources.list.d/rudder.list
+        echo "deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main multiverse restricted universe" > /etc/apt/sources.list.d/rudder.list
     else
-        echo "#deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main contrib non-free" >> /etc/apt/sources.list.d/rudder.list
+        echo "#deb http://www.rudder-project.org/apt-${RUDDER_VERSION}/ ${DEBIAN_RELEASE} main multiverse restricted universe" >> /etc/apt/sources.list.d/rudder.list
     fi
 done
 
 # Update APT cache
 aptitude update
+
+apt-get install -y apache2
+
+a2enmod version
+
+service apache2 restart
 
 #Packages required by Rudder
 aptitude ${APTITUDE_ARGS} install rudder-server-root
