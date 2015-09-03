@@ -31,9 +31,7 @@ ZYPPER_ARGS="--non-interactive --no-gpg-checks"
 # Host preparation:
 # This machine is "node", with the FQDN "node.rudder.local".
 # It has this IP : 192.168.42.11 (See the Vagrantfile)
-
-sed -ri "s/^127\.0\.0\.1[\t ]+(node[0-9]+)[\t ]+(.*)/127\.0\.0\.1\\t\1\.rudder\.local \2/" /etc/hosts
-echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
+/vagrant/provision/clean_network.sh
 
 # Add Rudder repositories
 for RUDDER_VERSION in 2.10 2.11 3.0
