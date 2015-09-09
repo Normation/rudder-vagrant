@@ -44,18 +44,7 @@ export DEBIAN_FRONTEND=noninteractive
 # Host preparation:
 # This machine is "server", with the FQDN "server.rudder.local".
 # It has this IP : 192.168.42.10 (See the Vagrantfile)
-
-sed -ri "s/^127\.0\.0\.1[\t ]+server[\t ]+(.*)$/127\.0\.0\.1\tserver\.rudder\.local \1/" /etc/hosts
-echo -e "\n192.168.42.11	node1.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.12	node2.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.13	node3.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.14	node4.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.15	node5.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.16	node6.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.17	node7.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.18	node8.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.19	node9.rudder.local" >> /etc/hosts
-echo -e "\n192.168.42.20	node10.rudder.local" >> /etc/hosts
+/vagrant/provision/clean_network.sh
 
 # Install lsb-release so we can guess which Debian version are we operating on.
 aptitude update && aptitude ${APTITUDE_ARGS} install lsb-release
