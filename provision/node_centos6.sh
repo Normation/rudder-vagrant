@@ -33,7 +33,17 @@ YUM_ARGS="-y --nogpgcheck"
 # It has this IP : 192.168.42.11 (See the Vagrantfile)
 
 sed -ri "s/^127\.0\.0\.1[\t ]+(node[0-9]+)[\t ]+(.*)/127\.0\.0\.1\\t\1\.rudder\.local \2/" /etc/hosts
-echo -e "\n192.168.42.10	server.rudder.local" >> /etc/hosts
+echo -e "\n192.168.42.10	server.rudder.local server" >> /etc/hosts
+echo -e "\n192.168.42.11	node1.rudder.local node1" >> /etc/hosts
+echo -e "\n192.168.42.12	node2.rudder.local node2" >> /etc/hosts
+echo -e "\n192.168.42.13	node3.rudder.local node3" >> /etc/hosts
+echo -e "\n192.168.42.14	node4.rudder.local node4" >> /etc/hosts
+echo -e "\n192.168.42.15	node5.rudder.local node5" >> /etc/hosts
+echo -e "\n192.168.42.16	node6.rudder.local node6" >> /etc/hosts
+echo -e "\n192.168.42.17	node7.rudder.local node7" >> /etc/hosts
+echo -e "\n192.168.42.18	node8.rudder.local node8" >> /etc/hosts
+echo -e "\n192.168.42.19	node9.rudder.local node9" >> /etc/hosts
+echo -e "\n192.168.42.20	node10.rudder.local node10" >> /etc/hosts
 
 # Add Rudder repositories
 for RUDDER_VERSION in latest; do
