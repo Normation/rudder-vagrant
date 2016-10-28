@@ -1,36 +1,30 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-#####################################################################################
-# Copyright 2016 Normation SAS
-#####################################################################################
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, Version 3.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-#####################################################################################
-
+require_relative 'vagrant.rb'
 
 Vagrant.configure("2") do |config|
-
-  config.vm.define "server" do |server|
-    server.vm.box = "ubuntu/trusty64"
-    server.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "1536"]
-    end
-    server.vm.provision :shell, :path => "server.sh"
-    server.vm.network :private_network, ip: "192.168.42.10"
-    server.vm.hostname = "server.rudder.local"
-    server.vm.network :forwarded_port, guest: 443, host: 8081
-  end
+config.vm.provider 'virtualbox' do |v|
+    v.linked_clone = true if Vagrant::VERSION =~ /^1.8/
+end
+if Vagrant.has_plugin?("vagrant-cachier")
+  config.cache.scope = :box
 end
 
+# you can replace it with $centos7 or any other name available in the vagrant.rb file
+system = $ubuntu14_04
+# you can put any supported version here
+version = '4.0'
+# prefix for the box names
+prefix = 'demo'
+
+configure_box(config, system, prefix, 'server', setup:'server', version:version)
+configure_box(config, system, prefix, 'agent1', setup:'agent', version:version, server:'server')
+configure_box(config, system, prefix, 'agent2', setup:'agent', version:version, server:'server')
+
+## Uncomment if you want a more complex setup
+#configure_box(config, system, prefix, 'relay', setup:'relay', version:version, server:'server')
+#configure_box(config, system, prefix, 'agent3', setup:'agent', version:version, server:'relay')
+#configure_box(config, system, prefix, 'agent4', setup:'agent', version:version, server:'relay')
+
+end

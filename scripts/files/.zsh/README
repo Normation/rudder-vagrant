@@ -1,0 +1,60 @@
+Installation
+--------------------------------------------------------------------------------
+
+I suggest to directly use the subversion repository, using something like:
+
+% cd
+% svn checkout http://svn.asyd.net/svn/zsh/trunk .zsh
+% ln -s .zsh/zshrc .zshrc
+
+Warning, this will overwrite your .zshrc file if its exists.
+
+**** REMEMBER TO UPDATE ****
+
+Per host configuration
+--------------------------------------------------------------------------------
+
+There is one file configuration per host, store in ~/.zsh/rc.hosts. If
+no configuration file for your current hostname, the default.zsh file is used.
+So copy the default.zsh to <short hostname>.zsh, and edit it :
+
+% cd ~/.zsh/rc.host
+% cp default.zsh ${$(hostname)//.*/}.zsh
+
+This method is very useful when your homedirectory is managed by NFS for
+example.
+
+Local configuration
+--------------------------------------------------------------------------------
+
+If you want override somethings that are defined in my configuraiton, I strongly
+recommands you to create a ~/.zsh/rc.local file (which will never be managed
+by subversion). This files is read after others one.
+
+Prompt configuration
+--------------------------------------------------------------------------------
+
+The prompt is defined in ~/.zsh/rc.os files, you can defined colors in
+~/.zsh/rc.host<file>
+
+Notes
+--------------------------------------------------------------------------------
+
+If you use the subversion repository (as I recommand! :), it's probably a better
+idea to not edit files managed by SVN, use the ~/.zsh/rc.hosts/<hostname>.zsh to
+overwrite. 
+
+Contributors
+--------------------------------------------------------------------------------
+
+Thanks to the following people that helped me to increase the configuration:
+
+- Regis Roches
+- Antoine Reversat
+
+Feedback
+--------------------------------------------------------------------------------
+
+Any feedbacks are welcome, sent them to asyd@asyd.net.
+
+Enjoy!

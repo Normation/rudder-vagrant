@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/zsh/!svn/ver/280/trunk/rc.os
+END
+FreeBSD.zsh
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/zsh/!svn/ver/279/trunk/rc.os/FreeBSD.zsh
+END
+OpenBSD.zsh
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/zsh/!svn/ver/276/trunk/rc.os/OpenBSD.zsh
+END
+Linux.zsh
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/zsh/!svn/ver/276/trunk/rc.os/Linux.zsh
+END
+prompt.zsh
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/zsh/!svn/ver/62/trunk/rc.os/prompt.zsh
+END
+Debian.zsh
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/zsh/!svn/ver/70/trunk/rc.os/Debian.zsh
+END
+Darwin.zsh
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/zsh/!svn/ver/276/trunk/rc.os/Darwin.zsh
+END
+SunOS.zsh
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/zsh/!svn/ver/280/trunk/rc.os/SunOS.zsh
+END
+common.zsh
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/zsh/!svn/ver/66/trunk/rc.os/common.zsh
+END

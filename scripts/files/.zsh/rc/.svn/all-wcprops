@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/zsh/!svn/ver/282/trunk/rc
+END
+titles.rc
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/zsh/!svn/ver/2/trunk/rc/titles.rc
+END
+00modules.rc
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/zsh/!svn/ver/79/trunk/rc/00modules.rc
+END
+functions.rc
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/zsh/!svn/ver/66/trunk/rc/functions.rc
+END
+variables.rc
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/zsh/!svn/ver/195/trunk/rc/variables.rc
+END
+alias.rc
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/zsh/!svn/ver/281/trunk/rc/alias.rc
+END
+zle.rc
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/zsh/!svn/ver/195/trunk/rc/zle.rc
+END
+zstyle.rc
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/zsh/!svn/ver/276/trunk/rc/zstyle.rc
+END
+misc.rc
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/zsh/!svn/ver/21/trunk/rc/misc.rc
+END
+options.rc
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/zsh/!svn/ver/282/trunk/rc/options.rc
+END
+check_update.rc
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/zsh/!svn/ver/81/trunk/rc/check_update.rc
+END
+history.rc
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/zsh/!svn/ver/43/trunk/rc/history.rc
+END

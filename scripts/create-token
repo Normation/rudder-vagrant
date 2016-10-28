@@ -1,0 +1,21 @@
+#!/bin/sh
+
+uuid=$(uuidgen)
+name="Test system"
+token=$(tr -cd 'A-Za-z0-9' < /dev/urandom | head -c 32)
+date=$(date +%Y%m%d%H%M%S.000Z)
+password=$(sed -ne '/RUDDER_OPENLDAP_BIND_PASSWORD/s/RUDDER_OPENLDAP_BIND_PASSWORD://p' /opt/rudder/etc/rudder-passwords.conf)
+
+/opt/rudder/bin/ldapadd -h localhost -D "cn=manager,cn=rudder-configuration" -w "${password}" -c <<EOF
+dn: apiAccountId=a92b486d-379a-4e96-b2e8-b1ac6f7fd4a5,ou=API Accounts,ou=Rudder,cn=rudder-configuration
+objectClass: top
+objectClass: apiAccount
+apiAccountId: ${uuid}
+apiToken: ${token}
+apiTokenCreationTimestamp: ${date}
+cn: ${name}
+isEnabled: TRUE
+creationTimestamp: ${date}
+EOF
+
+echo ${token} > /root/rudder-token
