@@ -1,0 +1,39 @@
+# vim: set syntax=zsh:
+
+local update_file last_update week
+update_file=$HOME/.zsh/misc/update
+
+# This script check for configuration files update
+function check_update () {
+	if [[ ! -d $HOME/.zsh/.svn || ! -x =svn ]] ; then
+		return 0
+	fi
+
+	# Remote revisions and local revision
+	local rrev lrev
+
+	echo "Looking for zsh configuration update, please wait..."
+	rrev=(${(f)"$(=svn info http://svn.asyd.net/svn/zsh/trunk)"})
+	rrev=(${${(M)rrev##Revision: (*)}//Revision: })
+	lrev=(${(f)"$(=svn info $HOME/.zsh)"})
+	lrev=(${${(M)lrev##Revision: (*)}//Revision: })
+
+	if [[ $rrev > $lrev ]]; then
+		echo "A new version ($rrev) is available, please update your local repository ($lrev)."
+	fi
+}
+
+# Create the file used at reference it not exists
+if [[ ! -r $update_file ]]; then
+	touch $update_file
+fi
+
+last_update=$(stat +mtime $update_file)
+
+# Number of seconds in a week
+week=$((3600 * 24 * 7))
+
+if [[ $(($EPOCHSECONDS - $last_update)) -gt $week ]] ; then
+	check_update
+	touch $update_file
+fi

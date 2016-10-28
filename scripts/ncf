@@ -1,0 +1,116 @@
+#!/bin/sh
+
+PATH=$PATH:/var/rudder/cfengine-community/bin:/var/cfengine/bin
+export PATH
+
+# Run a technique file (or any cfengine file)
+ncf_technique() {
+  file="$1"
+  CODE=$(cat "${file}")
+  BUNDLE=$(grep "^bundle agent" "${file}" | head -n 1 | perl -pe 's/^bundle agent\s+(\w+).*/$1/')
+  run
+}
+
+# Run code from stdin
+ncf_code() {
+  BUNDLE="main"
+  header="
+bundle agent main {
+  methods:
+"
+  script=$(perl -pe 's/^(\s*)(\w+\s*\()/$1"any" usebundle => $2/')
+  footer="
+}
+"
+  CODE="${header}${script}${footer}"
+  run
+}
+
+# Run a single ncf method
+ncf_method() {
+  method="$1"
+  shift
+  parameters=""
+  first=1
+  while [ -n "$1" ]
+  do
+    [ ${first} -ne 1 ] && parameters="${parameters},"
+    parameters="${parameters}\"$1\""
+    first=0
+    shift
+  done
+  BUNDLE="main"
+  CODE="
+bundle agent main {
+  methods:
+    \"any\" usebundle => ${method}(${parameters});
+}
+"
+  run
+}
+
+# Run the buncle $BUNDLE from cfengine source $CODE
+run() {
+  FILE=$(mktemp)
+  cat > "${FILE}" <<'EOF'
+bundle common inputs
+{
+  vars:
+      "framework_path"          string => "/var/rudder/ncf/common";
+      "local_path"              string => "/var/rudder/ncf/local";
+      "list_compatible_inputs"  string => "NCF_CACHE_PATH=/tmp /bin/sh ${framework_path}/10_ncf_internals/list-compatible-inputs";
+
+      "ncf_internals"           string => execresult("${list_compatible_inputs} ${sys.cf_version} ${framework_path} 10_ncf_internals", "useshell");
+      "cfe_basics"              string => execresult("${list_compatible_inputs} ${sys.cf_version} ${framework_path} 20_cfe_basics", "useshell");
+      "generic_methods"         string => execresult("${list_compatible_inputs} ${sys.cf_version} ${framework_path} 30_generic_methods", "useshell");
+      "it_ops_knowledge"        string => execresult("${list_compatible_inputs} ${sys.cf_version} ${framework_path} 40_it_ops_knowledge", "useshell");
+
+      "local_generic_methods"   string => execresult("${list_compatible_inputs} ${sys.cf_version} ${local_path} 30_generic_methods", "useshell");
+      "local_it_ops_knowledge"  string => execresult("${list_compatible_inputs} ${sys.cf_version} ${local_path} 40_it_ops_knowledge", "useshell");
+
+      "ncf_internals_files"          slist => splitstring("${ncf_internals}", "\n", 10000);
+      "cfe_basics_files"             slist => splitstring("${cfe_basics}", "\n", 10000);
+      "generic_methods_files"        slist => splitstring("${generic_methods}", "\n", 10000);
+      "it_ops_knowledge_files"       slist => splitstring("${it_ops_knowledge}", "\n", 10000);
+      "local_generic_methods_files"  slist => splitstring("${local_generic_methods}", "\n", 10000);
+      "local_it_ops_knowledge_files" slist => splitstring("${local_it_ops_knowledge}", "\n", 10000);
+}
+
+body common control
+{
+    inputs => {
+               @(inputs.ncf_internals_files),
+               @(inputs.cfe_basics_files),
+               @(inputs.generic_methods_files),
+               @(inputs.it_ops_knowledge_files),
+               @(inputs.local_generic_methods_files),
+               @(inputs.local_it_ops_knowledge_files)
+              };
+
+    bundlesequence => { 
+      "configuration",
+EOF
+  echo "      \"${BUNDLE}\"" >> "${FILE}"
+  cat >> "${FILE}" <<'EOF'
+    };
+}
+
+EOF
+  echo "${CODE}" >> "${FILE}"
+  cf-agent -f "${FILE}" -KIC
+  code=$?
+  [ ${code} -eq 0 ] && rm -f "${FILE}"
+  exit ${code}
+}
+
+# MAIN
+# Simple but enough at the moment
+if [ "$1" = "-f" ]
+then
+  ncf_technique "$2"
+elif [ "$1" = "-i" ]
+then
+  ncf_code
+else
+  ncf_method "$@"
+fi

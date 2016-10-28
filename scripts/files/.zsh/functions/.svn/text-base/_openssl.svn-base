@@ -1,0 +1,242 @@
+#compdef openssl
+
+# OpenSSL zsh completion
+# Bruno Bonfils <asyd@asyd.net>
+# 2005-11-13
+
+local prev="$words[CURRENT-1]"     # previous word
+local cmd="$words[2]"              # Current openssl sub command (i.e. x509, req, etc..)
+
+local -a openssl_commands
+local -a options
+local -A explanations
+
+# Associative arrays to add description based on the option
+explanations=(
+	'-in' 'Input file' 
+	'-out' 'Output file'
+	'-CA' 'CA file'
+	'-rand' 'Seed data file'
+	'-key' 'Key file'
+	'-CAfile' 'CA file'
+	'-cacert' 'CA certificate file'
+	'-CApath' 'CA directory'
+)
+
+# List of openssl's sub commands
+openssl_commands=("asn1parse" "s_client" "x509" "req" "ca"
+		"dsa" "crl" "ocsp" "pkcs12" "verify"
+		"crl" "pkcs7" "genrsa" "gendsa")
+
+local -a textoptions					  # suboptions of X509's certopt command
+textoptions=("compatible" "no_header" "no_version" "no_serial" 
+				"no_signame" "no_validity" "no_subject" "no_issuer" 
+				"no_pubkey" "no_sigdump"  "no_aux" "no_extensions" 
+				"ext_default" "ext_error" "ext_parse" "ext_dump" "ca_default")
+
+# Is first word an OpenSSL subcommand ?
+if [[ -n ${(M)openssl_commands:#$cmd} ]] ; then
+
+    # These options are used by lot of sub openssl_commands
+    # The continue prevent complete others options
+    case "$prev" in
+		"-CA"|"-rand"|"-cacert"|"-cert"|"-in"|"-out"|"-key"|"-CAfile")
+			 _wanted filename expl $explanations[$prev] _files
+			 continue
+			 ;;
+		"-passin"|"-passout")
+			_wanted passphrase expl "pass phrase format" 
+			continue
+			;;
+		"-inform"|"-outform"|"-certform")
+			 _wanted format expl "Format" compadd "pem" "der"
+			 continue
+			 ;;
+		"-CApath")
+			 _wanted directory expl $explanations[$prev] _directories
+			 continue
+			 ;;
+    esac
+    
+    # Complete for specific options
+    case "$cmd" in
+		# s_client
+		"s_client")
+			 case "$prev" in
+			"-connect")
+				 _wanted host expl "host:port" _hosts
+				 ;;
+			"-starttls")
+				 _wanted protocol expl "protocol" compadd "pop3" "smtp"
+				 ;;
+			*)
+				 options=("-connect" "-cert" "-certform" "-key" "-keyform" "-pass" 
+							"-verify" "-CApath" "-CAfile" "-reconnect" "-pause" "-showcerts" 
+							"-prexit" "-state" "-debug" "-msg" "-nbio_test" "-crlf" 
+							"-ign_eof" "-quiet" "-bugs" "-cipher" "-starttls" "-engine" "-rand")
+
+				 _wanted options expl "s_client options" compadd - $options
+				 ;;
+			 esac
+		 ;;
+		# X509 subcommand
+		"x509")
+			 case "$prev" in
+				"-certopt")
+					 _wanted certopt expl "Certificate options" compadd -q -S, $textoptions
+					 ;;
+				# Complete for x509 options
+				*)
+					 options=("-inform" "-outform" "-in" "-out" "-engine" "-text" "-certopt" "-noout" "-modulus" "-serial" "-subject_hash" "-fingerprint")
+					 # Only complete for digest only if none found
+					 if [[ ! -n $words[(r)(-md2|-md5|-sha1|-mdc2)] ]] ; then
+					options=($options "-md2" "-md5" "-sha1" "-mdc2")
+					 fi
+					 _wanted options expl "x509 options" compadd - $options
+					 ;;
+			 esac
+		 ;;
+		# verify subcommand
+		"verify")
+			options=("-CAfile" "-CApath" "-purpose" "-untrusted" "-issuer_checks" "-verbose")
+				_wanted options expl "verify options" compadd - $options
+				_wanted certificates expl "X509 certificates" _files
+			;;
+		# req subcommand
+		"req")
+			 options=("-inform" "-outform" "-in" "-passin" "-out" "-passout" 
+						 "-text" "-pubkey" "-noout" "-verify" "-new" "-rand" "-newkey" 
+						 "-key" "-keyform" "-keyout" "-nodes" "-config" "-multivalue-rdn" 
+						 "-x509" "-days" "-set_serial" "-extensions" "-reqexts" 
+						 "-utf8" "-nameopt" "-asn1-kludge" "-newhdr" "-batch" "-verbose" "-engine")
+
+			 # Complete for digest only if none found
+			 if [[ ! -n $words[(r)(-md2|-md5|-sha1|-mdc2)] ]] ; then
+				options=($options "-md2" "-md5" "-sha1" "-mdc2")
+			 fi
+			 _wanted options expl "req options" compadd - $options
+		 ;;
+		# OCSP
+		"ocsp")
+			case "$prev" in
+				"-issuer"|"-index"|"-reqout"|"-respout"|"-VAfile")
+					_wanted filename expl "${prev//-/} file" _files
+				;;
+				"-port")
+					# TODO FIXME, support hosts:port
+					_wanted port expl "port" _ports
+				;;
+				"-url")
+					_wanted url expl "URL" _urls
+				;;
+				*)
+					options=("-out" "-issuer" "-cert" "-serial" "-signer" "-signkey" "-sign_other" "-req_text" 
+						"-url" "-CAfile" "-port" "-index" "-CApath" "-VAfile" "-nonce" "-no_nonce"
+						"-req_text" "-resp_text" "-text" "-reqout" "-respout"	"-host")
+
+					_wanted options expl 'ocsp options' compadd - $options
+				;;
+			esac
+			;;
+		# pkcs12
+		"pkcs12")
+				options=('-in' '-out' '-pass' '-passout' '-noout' '-clcerts' '-cacerts' '-nocerts' 
+							'-nokeys' '-info' '-des' '-des3' '-idea' '-nodes' '-nomacver' '-twopass' '-export'
+							'-out' '-inkey' '-name' '-certfile' '-caname' '-passin' '-chain' '-descert')
+
+				_wanted options expl 'pkcs12 options' compadd - $options
+			;;
+		# crl
+		"crl")
+				options=('-inform' '-outform' '-text' '-in' '-out' '-noout' '-hash' '-issuer' 
+					'-lastupdate' '-nextupdate' '-CAfile' '-CApath')
+
+				_wanted options expl 'CRL options' compadd - $options
+			;;
+		"pkcs7")
+				options=('-inform' '-outform' '-in' '-text' '-out' '-print_certs' '-noout' '-engine')
+
+				_wanted options expl 'PKCS#7 options' compadd - $options
+			;;
+		"asn1parse")
+			case "$prev" in
+				"-offset"|"-strparse")
+			 		_wanted format expl "Offset" compadd - "number"
+				;;
+				"-length")
+				;;
+				*)
+					options=('-inform' '-in' '-out' '-noout' '-offset' '-length' '-i' '-oid' '-strpase')
+					_wanted options expl 'ASN1Parse options' compadd - $options
+				;;
+			esac
+			;;
+		"ca")
+			case "$prev" in
+				"-config"|"-ss_cert"|"-spkack"|"-extfile")
+			 		_wanted filename expl "${prev/-/} file" _files
+				;;
+				"-outdir")
+					_wanted directory expl 'Directory output' _directories
+				;;
+				"-startdate"|"-enddate"|"-crl_compromise"|"-crl_CA_compromise")
+					_message 'Date (YYMMDDHHMMSSZ)'
+				;;
+				"-days"|"-crldays")
+					_message 'Number of days'
+				;;
+				"-crlhours")
+					_message 'Number of hours'
+				;;
+				"-crl_reason")
+					reasons=("unspecified" 
+						"keyCompromise" 
+						"CACompromise"
+						"affiliationChanged" 
+						"superseded" 
+						"cessationOfOperation" 
+						"certificateHold" 
+						"removeFromCRL")
+					_wanted reason expl 'Revocation reason' compadd - $reasons
+				;;
+				"-md")
+					mds=("md5" "sha1" "mdc2")
+					_wanted msgdst expl 'Message digest' compadd - $mds
+				;;
+				"-name"|"-policy"|"-extensions"|"-crlexts")
+					_message 'Section'
+				;;
+				*)
+					options=('-config' '-name' '-in' '-ss_cert' '-spkack' '-infiles' '-out'
+					 '-outdir' '-cert' '-keyfile' '-key' '-passin' '-verbose'
+					'-notext' '-startdate' '-enddate' '-days' '-md' '-policy'
+					'-msie_hack' '-preverseDN' '-noemailDN' '-batch' '-extensions'
+					'-extfile' '-engine' '-gencrl' '-crldays' '-crlhours' '-revoke'
+					'-crl_reason' '-crl_hold' '-crl_compromise' '-crl_CA_compromise'
+					'-subj' '-crlexts')
+					_wanted options expl 'CA options' compadd - $options
+				;;
+			esac
+			;;
+		"genrsa")
+			digests=('-des' '-des3' '-idea')
+			options=('-out' '-passout')
+
+			# FIXME TODO
+			if [[ ! -n $words[(r)($digests)] ]] ; then
+				options=($options $digests)
+			fi
+
+			_wanted options expl 'genrsa Options' compadd - $options
+		;;
+		*)
+			_message "invalid command"
+		;;
+   esac
+else # Nop, complete for subcommands
+	if [[ ${#words} < 3 ]] ; then
+	    _wanted subcommand expl "Subcommand" compadd $openssl_commands
+	else
+		_message "invalid command"
+	fi
+fi

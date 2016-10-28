@@ -1,0 +1,19 @@
+#
+# History options
+#
+
+setopt EXTENDED_HISTORY       # add a timestamp and the duration of each command
+setopt SHARE_HISTORY          # _all_ zsh sessions share the same history files
+setopt HIST_IGNORE_ALL_DUPS   # ignores duplications
+
+if [[ $USER != "root" ]] ; then
+	HISTFILE=~/.zsh/histories/${$(hostname)//.*/}
+else
+	HISTFILE=~/.zsh/histories/${$(hostname)//.*/}.root
+fi
+
+HISTFILE=~/.zsh/histories/$(hostname)
+HISTSIZE=1000000
+SAVEHIST=1000000
+
+export HISTFILE HISTSIZE SAVEHIST

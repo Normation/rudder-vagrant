@@ -1,0 +1,15 @@
+# vim: set syntax=zsh:
+
+# Use emacs bindkey
+bindkey -e
+
+bindkey '^U' backward-kill-line
+
+#zle -N insert-root-prefix
+autoload -U insert-root-prefix
+zle -N insert-root-prefix
+bindkey "^[f" insert-root-prefix
+
+# Use control-<left|right> arrows to move through words
+bindkey '^[[1;5D' vi-backward-word
+bindkey '^[[1;5C' vi-forward-word

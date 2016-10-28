@@ -1,0 +1,32 @@
+
+
+[ -d /usr/local/info ] && export INFO_PATH="$INFO_PATH;/usr/local/info"
+
+# vi/vim
+if [ -x $(which -p vim) ]; then 
+	alias vi="vim"
+	export EDITOR=vim
+	export VISUAL=vim
+fi
+
+# less
+if [ -x `which less` ]; then
+	export PAGER=less
+	export LESS="-ir"
+	export LESSOPEN="| /usr/bin/lesspipe %s"
+	export LESSCLOSE="/usr/bin/lesspipe %s %s"
+fi
+
+#export CVSROOT=:pserver:asyd@localhost:/home/cvs
+
+PATH=$PATH:~/.zsh/bin:~/bin:/usr/local/bin
+
+for tool in $HOME/tools/*(-/DN) ; do
+	if [ -d $tool/bin ] ; then
+		PATH=$PATH:$tool/bin
+	fi
+done
+
+export PATH
+
+export WORDCHARS="${WORDCHARS:s#/#}" 
