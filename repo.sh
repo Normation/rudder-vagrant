@@ -19,18 +19,27 @@
 
 set -e
 
+# Fetch parameters
+KEYSERVER=keyserver.ubuntu.com
+KEY=474A19E8
+
 # Make sure we don't run interactive commands
 export DEBIAN_FRONTEND=noninteractive
 
-# Rudder related parameters
-LDAPRESET="yes"
-ALLOWEDNETWORK[0]='192.168.42.0/24'
+# Accept the Rudder repository key
+wget --quiet -O- "https://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | apt-key add -
 
-# Packages required by Rudder
-apt-get --assume-yes install rudder-server-root
+# Update APT cache
+apt-get update
 
-# Initialize Rudder
-/opt/rudder/bin/rudder-init.sh $LDAPRESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
+apt-get --assume-yes install lsb-release
 
-echo "Rudder server install: FINISHED" |tee rudder-install.log
-echo "You can now access the Rudder web interface on https://localhost:8081/" |tee rudder-install.log
+# Add latest Rudder repository
+echo "deb http://www.rudder-project.org/apt-latest/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/rudder.list
+
+# Update APT cache
+apt-get update
+
+# Configure name resolution
+echo "192.168.42.10 server.rudder.local
+192.168.42.11 node.rudder.local" >> /etc/hosts

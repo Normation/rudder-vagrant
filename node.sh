@@ -22,15 +22,16 @@ set -e
 # Make sure we don't run interactive commands
 export DEBIAN_FRONTEND=noninteractive
 
-# Rudder related parameters
-LDAPRESET="yes"
-ALLOWEDNETWORK[0]='192.168.42.0/24'
-
 # Packages required by Rudder
-apt-get --assume-yes install rudder-server-root
+apt-get --assume-yes install rudder-agent
 
-# Initialize Rudder
-/opt/rudder/bin/rudder-init.sh $LDAPRESET ${ALLOWEDNETWORK[0]} < /dev/null > /dev/null 2>&1
+# Setup server hostname 
+echo "server.rudder.local" > /var/rudder/cfengine-community/policy_server.dat
 
-echo "Rudder server install: FINISHED" |tee rudder-install.log
-echo "You can now access the Rudder web interface on https://localhost:8081/" |tee rudder-install.log
+# Send an inventory
+rudder agent inventory
+
+# start rudder service
+/etc/init.d/rudder start
+
+echo "Rudder node install: FINISHED" |tee rudder-install.log

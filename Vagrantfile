@@ -27,10 +27,23 @@ Vagrant.configure("2") do |config|
     server.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "1536"]
     end
+    server.vm.provision :shell, :path => "repo.sh"
     server.vm.provision :shell, :path => "server.sh"
     server.vm.network :private_network, ip: "192.168.42.10"
     server.vm.hostname = "server.rudder.local"
     server.vm.network :forwarded_port, guest: 443, host: 8081
   end
+
+  config.vm.define "node" do |node|
+    node.vm.box = "ubuntu/trusty64"
+    node.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "256"]
+    end
+    node.vm.provision :shell, :path => "repo.sh"
+    node.vm.provision :shell, :path => "node.sh"
+    node.vm.network :private_network, ip: "192.168.42.11"
+    node.vm.hostname = "node.rudder.local"
+  end
+
 end
 
