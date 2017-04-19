@@ -23,7 +23,7 @@
 Vagrant.configure("2") do |config|
 
   config.vm.define "server" do |server|
-    server.vm.box = "ubuntu/trusty64"
+    server.vm.box = "ubuntu/xenial64"
     server.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "1536"]
     end
