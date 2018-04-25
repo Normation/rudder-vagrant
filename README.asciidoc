@@ -1,28 +1,25 @@
-Rudder: configuration management for the masses
+Rudder: Continuous configuration for effective compliance
 ----------------------------------------------
 
-This project is part of Rudder - configuration management for the masses.
+Rudder is an easy to use, web-driven, role-based solution for IT Infrastructure Automation & Compliance.
  
 See: http://rudder-project.org for more information on Rudder.
 
 See: https://www.vagrantup.com for more information on vagrant.
 
-
-
-This git repository contains a Vagrant configuration, enabling
+This repository contains a Vagrant configuration, enabling
 the user to launch from scratch a complete Rudder environment in a few minutes.
 
 === Synopsis
 
-Have vagrant >=1.4 and VirtualBox
+* Have vagrant >=1.4 and VirtualBox, and run:
 
 ----
 vagrant up
 ----
 
-Connect to https://localhost:8081/
+* Connect to https://localhost:8081/ 
 * Login with: admin / admin
-
 
 === Requirements
 
@@ -33,7 +30,7 @@ The former may be installed using your favorite package management system, and t
 See the complete installation instructions here:
 
 * VirtualBox: https://www.virtualbox.org/wiki/Downloads
-* Vagrant (latest is better, 1.8.5 as of September 2016): https://www.vagrantup.com/downloads.html 
+* Vagrant: https://www.vagrantup.com/downloads.html 
 
 === Usage
 
@@ -45,7 +42,7 @@ git clone https://github.com/Normation/rudder-vagrant.git && cd rudder-vagrant
 
 Then you can use the Vagrant environment at will:
 
-* To launch a complete environment (server, based on Ubuntu 14.04)
+* To launch a complete environment (based on latest Ubuntu LTS)
 
 ----
 vagrant up
@@ -113,12 +110,7 @@ http://www.gnu.org/licenses/gpl-3.0.txt
 
 Thank you for your interest in our project!
 The contribution process is detailed here: 
-http://www.rudder-project.org/HowToContribute
+https://www.rudder-project.org/site/documentation/how-to-contribute/
 
-[horizontal]
-Screenshots:: http://www.rudder-project.org/foswiki/Screenshots/WebHome
-User documentation:: http://www.rudder-project.org/rudder-doc/rudder-doc.html
-Bug report:: http://www.rudder-project.org/redmine/projects/rudder/issues
-Mailing list, irc:: http://www.rudder-project.org/foswiki/Community/
-
+Rudder website: https://www.rudder-project.org/site
 

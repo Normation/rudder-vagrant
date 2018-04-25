@@ -32,6 +32,6 @@ echo "server.rudder.local" > /var/rudder/cfengine-community/policy_server.dat
 rudder agent inventory
 
 # start rudder service
-/etc/init.d/rudder start
+systemctl start rudder-agent
 
 echo "Rudder node install: FINISHED" |tee rudder-install.log
