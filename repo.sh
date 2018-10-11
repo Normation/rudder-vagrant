@@ -35,7 +35,7 @@ apt-get update
 apt-get --assume-yes install lsb-release
 
 # Add latest Rudder repository
-echo "deb http://www.rudder-project.org/apt-latest/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/rudder.list
+echo "deb http://repository.rudder.io/apt/latest/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/rudder.list
 
 # Update APT cache
 apt-get update
