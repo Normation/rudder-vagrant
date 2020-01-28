@@ -1,9 +1,8 @@
-Rudder: Continuous configuration for effective compliance
-----------------------------------------------
+== Rudder: Continuous configuration for effective compliance
 
 Rudder is an easy to use, web-driven, role-based solution for IT Infrastructure Automation & Compliance.
  
-See: http://rudder-project.org for more information on Rudder.
+See: https://rudder-project.org for more information on Rudder.
 
 See: https://www.vagrantup.com for more information on vagrant.
 
@@ -50,11 +49,8 @@ vagrant up
 
 NOTE: Your Rudder environment is available at: https://localhost:8081/
 
-NOTE: The node and the server are automatically set to communicate with each
-other, but you will have to wait approximately 10mn before the node appears in
-Rudder's web interface in the node acceptation pane.
-If you are in a hurry, run a 'rudder agent inventory' on the node, and 'rudder agent run' on the
-server to make things go a bit faster.
+NOTE: The node and the server are automatically set to communicate with each other.
+The node must be accepted in the interface to be fully ready.
 
 === Command reference for Vagrant
 
@@ -77,15 +73,6 @@ vagrant halt
 vagrant destroy
 ----
 
-* Suspend / Resume the VMs (NOT RECOMMENDED)
-
-----
-vagrant suspend # Or "resume"
-----
-
-NOTE: This command messes up the VMs clock (I call that the DeLorean effect) and is
-likely to make Rudder output odd reports if you do not have an active NTP daemon.
-
 * Open an SSH shell connection to a machine
 
 ----
@@ -94,11 +81,9 @@ vagrant ssh server
 
 === Authors
 
-Normation http://normation.com
+Supported by Normation http://normation.com
 
-- Matthieu "Kegeruneku" Cerda matthieu.cerda@normation.com
-- Vincent Membré vincent.membre@normation.com
-- Benoit Peccatte benoit.peccatte@normation.com
+The list of contributors is available in https://github.com/Normation/rudder/graphs/contributors
 
 === License
 
@@ -110,7 +95,7 @@ http://www.gnu.org/licenses/gpl-3.0.txt
 
 Thank you for your interest in our project!
 The contribution process is detailed here: 
-https://www.rudder-project.org/site/documentation/how-to-contribute/
+https://www.rudder.io/en/expand/contribute/
 
-Rudder website: https://www.rudder-project.org/site
+Rudder website: https://www.rudder.io/en/
 
