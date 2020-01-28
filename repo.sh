@@ -19,26 +19,19 @@
 
 set -e
 
-# Fetch parameters
-KEYSERVER=keyserver.ubuntu.com
-KEY=474A19E8
+SCRIPTS_PREFIX="/vagrant"
+if [ "$1" != "" ]; then
+  SCRIPTS_PREFIX=$1
+fi
 
-# Make sure we don't run interactive commands
-export DEBIAN_FRONTEND=noninteractive
-
-# Accept the Rudder repository key
-wget --quiet -O- "https://${KEYSERVER}/pks/lookup?op=get&search=0x${KEY}" | apt-key add -
-
-# Update APT cache
-apt-get update
-
-apt-get --assume-yes install lsb-release
-
-# Add latest Rudder repository
-echo "deb http://repository.rudder.io/apt/latest/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/rudder.list
-
-# Update APT cache
-apt-get update
+### THINGS TO DO ON AN ALREADY CLEAN BOX
+if type curl >/dev/null 2>/dev/null
+then
+  curl -L -s -o /usr/local/bin/rudder-setup https://repository.rudder.io/tools/rudder-setup
+else
+  wget -q -O /usr/local/bin/rudder-setup https://repository.rudder.io/tools/rudder-setup
+fi
+chmod +x /usr/local/bin/rudder-setup
 
 # Configure name resolution
 echo "192.168.42.10 server.rudder.local

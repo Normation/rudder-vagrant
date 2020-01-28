@@ -23,7 +23,7 @@
 Vagrant.configure("2") do |config|
 
   config.vm.define "server" do |server|
-    server.vm.box = "ubuntu/xenial64"
+    server.vm.box = "ubuntu/bionic64"
     server.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "1536"]
     end
@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "node" do |node|
-    node.vm.box = "ubuntu/xenial64"
+    node.vm.box = "ubuntu/bionic64"
     node.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "256"]
     end

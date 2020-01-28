@@ -22,8 +22,8 @@ set -e
 # Make sure we don't run interactive commands
 export DEBIAN_FRONTEND=noninteractive
 
-# Packages required by Rudder
-apt-get --assume-yes install rudder-agent
+/usr/local/bin/rudder-setup setup-agent "latest" "server.rudder.local"
+
 
 # Setup server hostname 
 echo "server.rudder.local" > /var/rudder/cfengine-community/policy_server.dat
@@ -31,7 +31,5 @@ echo "server.rudder.local" > /var/rudder/cfengine-community/policy_server.dat
 # Send an inventory
 rudder agent inventory
 
-# start rudder service
-systemctl start rudder-agent
 
 echo "Rudder node install: FINISHED" |tee rudder-install.log
