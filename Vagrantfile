@@ -23,23 +23,26 @@
 Vagrant.configure("2") do |config|
 
   config.vm.define "server" do |server|
-    server.vm.box = "ubuntu/bionic64"
+    server.vm.box = "ubuntu/jammy64"
     server.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "2048"]
     end
-    server.vm.provision :shell, :path => "https://repository.rudder.io/tools/rudder-setup", :args => ["setup-server", "latest"]
+    server.vm.provision :shell, :path => "https://repository.rudder.io/tools/rudder-setup",
+                                :args => ["setup-server", "latest"],
+                                :env  => {"ADMIN_USER" => "admin", "ADMIN_PASSWORD" => "admin"}
     server.vm.network :private_network, ip: "192.168.42.10"
     server.vm.hostname = "server.rudder.local"
     server.vm.network :forwarded_port, guest: 443, host: 8081
   end
 
   config.vm.define "node" do |node|
-    node.vm.box = "ubuntu/bionic64"
+    node.vm.box = "ubuntu/jammy64"
     node.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "256"]
     end
-    node.vm.provision :shell, :path => "https://repository.rudder.io/tools/rudder-setup", :args => ["setup-agent", "latest", "192.168.42.10"]
-    node.vm.provision :shell, :inline => "echo 'Rudder install: FINISHED. You can now access the Rudder web interface on https://localhost:8081/'"
+    node.vm.provision :shell, :path => "https://repository.rudder.io/tools/rudder-setup",
+                              :args => ["setup-agent", "latest", "192.168.42.10"]
+    node.vm.provision :shell, :inline => "echo 'SUCCESS: You can now access the Rudder web interface on https://localhost:8081/ with admin/admin credentials'"
     node.vm.network :private_network, ip: "192.168.42.11"
     node.vm.hostname = "node.rudder.local"
   end
