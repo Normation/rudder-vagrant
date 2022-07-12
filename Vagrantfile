@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "node" do |node|
     node.vm.box = "ubuntu/jammy64"
     node.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "256"]
+      vb.customize ["modifyvm", :id, "--memory", "512"]
     end
     node.vm.provision :shell, :path => "https://repository.rudder.io/tools/rudder-setup",
                               :args => ["setup-agent", "latest", "192.168.42.10"]
