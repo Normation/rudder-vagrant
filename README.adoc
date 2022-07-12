@@ -6,7 +6,7 @@ on-premises infrastructure in a simple, scalable and dynamic way.
 See our https://www.rudder.io[website] for more information about Rudder.
 
 This repository contains a Vagrant configuration, enabling
-the user to launch from scratch a complete Rudder environment in a few minutes.
+you to launch from scratch a complete Rudder environment in a few minutes.
 
 == Synopsis
 
