@@ -30,6 +30,7 @@ Vagrant.configure("2") do |config|
     server.vm.provision :shell, :path => "https://repository.rudder.io/tools/rudder-setup",
                                 :args => ["setup-server", "latest"],
                                 :env  => {"ADMIN_USER" => "admin", "ADMIN_PASSWORD" => "admin"}
+    server.vm.provision "shell", inline: "echo '192.168.42.11 node.rudder.local' >> /etc/hosts"
     server.vm.network :private_network, ip: "192.168.42.10"
     server.vm.hostname = "server.rudder.local"
     server.vm.network :forwarded_port, guest: 443, host: 8081
